@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Find Jobs | Deshakthi Lanka - Global Career Opportunities</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #ffffff;
+            color: #1e2a3e;
+            overflow-x: hidden;
+        }
+
+        /* ===== NAVBAR (Exactly matching homepage) ===== */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 5%;
+            background-color: #2e6f40;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            flex-wrap: wrap;
+        }
+
+        .logo img {
+            height: 48px;
+            width: auto;
+            filter: brightness(0) invert(1);
+        }
+
+        .nav-links ul {
+            display: flex;
+            gap: 1.8rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: white;
+            transition: 0.2s;
+            letter-spacing: 0.3px;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #ffd966;
+            border-bottom: 2px solid #ffd966;
+            padding-bottom: 4px;
+        }
+
+        .nav-action .btn-register {
+            background: white;
+            color: #2e6f40;
+            padding: 0.5rem 1.4rem;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .nav-action .btn-register:hover {
+            background: #ffd966;
+            color: #1e4620;
+            transform: translateY(-2px);
+        }
+
+        .btn-logout {
+            background: #fff0e0;
+            color: #2e6f40;
+            padding: 0.5rem 1.4rem;
+            border-radius: 40px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        /* ===== JOBS HERO SECTION ===== */
+        .jobs-hero {
+            background: linear-gradient(135deg, #e8f3ec 0%, #d4e8da 100%);
+            padding: 3rem 5%;
+        }
+
+        .hero-content-wrapper {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .jobs-hero-text {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .jobs-hero-text h1 {
+            font-size: 2.8rem;
+            color: #1e4620;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .jobs-hero-text p {
+            font-size: 1rem;
+            color: #4a6741;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Advanced Search Bar */
+        .advanced-search-bar {
+            background: white;
+            border-radius: 60px;
+            padding: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            flex-wrap: wrap;
+        }
+
+        .search-input-group {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            background: #f5f7f5;
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            gap: 0.5rem;
+        }
+
+        .search-icon {
+            font-size: 1.1rem;
+        }
+
+        .search-input-group input,
+        .search-input-group select {
+            flex: 1;
+            border: none;
+            background: transparent;
+            outline: none;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            padding: 0.5rem 0;
+        }
+
+        .search-divider {
+            width: 1px;
+            height: 35px;
+            background: #ddd;
+        }
+
+        .find-jobs-btn {
+            background: #2e6f40;
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .find-jobs-btn:hover {
+            background: #1c5a34;
+            transform: translateY(-2px);
+        }
+
+        .report-section {
+            background: #eef7ed;
+            padding: 1.8rem 2rem;
+            border-radius: 24px;
+            border: 1px solid #d2e5d3;
+            margin-bottom: 1.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .report-section h2 {
+            font-size: 1.1rem;
+            color: #1e4620;
+            margin: 0;
+        }
+
+        .report-section p {
+            color: #4a6b4d;
+            margin: 0;
+            font-size: 0.95rem;
+            max-width: 680px;
+        }
+
+        .report-btn {
+            background: #2e6f40;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            padding: 0.85rem 1.8rem;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .report-btn:hover {
+            background: #1c5a34;
+            transform: translateY(-2px);
+        }
+
+        /* Jobs Board Section */
+        .jobs-board-section {
+            padding: 3rem 5%;
+            background: #ffffff;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .board-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .results-count {
+            font-size: 0.9rem;
+            color: #5a6e5a;
+        }
+
+        .search-stats {
+            font-size: 0.8rem;
+            margin-top: 0.3rem;
+        }
+
+        .sort-filter-group {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .sort-filter-group label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1e4620;
+        }
+
+        .custom-select {
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            border: 1px solid #cbd5e0;
+            background: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            outline: none;
+            cursor: pointer;
+        }
+
+        /* Job Cards Grid */
+        .job-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .premium-job-card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            border: 1px solid #e2edde;
+        }
+
+        .premium-job-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 35px rgba(46,111,64,0.12);
+        }
+
+        .card-image-header {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            padding: 15px;
+        }
+
+        .badges {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge.full-time {
+            background: #2e6f40;
+            color: white;
+        }
+
+        .badge.urgent {
+            background: #e74c3c;
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        .card-body {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-body h3 {
+            font-size: 1.2rem;
+            color: #1e4620;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .job-location {
+            color: #5a6e5a;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .job-category {
+            font-size: 0.75rem;
+            color: #2e6f40;
+            margin-bottom: 0.8rem;
+            display: inline-block;
+            background: #e8f3ec;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            width: fit-content;
+        }
+
+        .job-desc {
+            color: #5a6e5a;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            margin-bottom: 1.2rem;
+            flex: 1;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid #e2edde;
+            margin-top: auto;
+        }
+
+        .salary {
+            font-weight: 700;
+            color: #2e6f40;
+            font-size: 0.95rem;
+        }
+
+        .apply-btn-small {
+            background: #2e6f40;
+            color: white;
+            padding: 0.5rem 1.2rem;
+            border-radius: 40px;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+            border: none;
+            cursor: pointer;
+        }
+
+        .apply-btn-small:hover {
+            background: #1c5a34;
+            transform: translateY(-2px);
+        }
+
+        .loading-spinner {
+            text-align: center;
+            padding: 3rem;
+            grid-column: 1/-1;
+            color: #5a6e5a;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 4rem 2rem;
+            grid-column: 1/-1;
+            color: #5a6e5a;
+        }
+
+        /* Salary Converter Card */
+        .salary-converter-card {
+            background: linear-gradient(135deg, #1e4620, #2e6f40);
+            color: white;
+            padding: 2rem;
+            border-radius: 28px;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .salary-converter-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .converter-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            align-items: flex-end;
+            margin-top: 1.5rem;
+        }
+
+        .converter-controls > div {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            text-align: left;
+        }
+
+        .converter-controls label {
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
+
+        .converter-controls input,
+        .converter-controls select {
+            padding: 0.6rem 1rem;
+            border-radius: 40px;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .converter-result {
+            background: rgba(255,255,255,0.2);
+            padding: 0.6rem 1.5rem;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        /* ===== FOOTER (Exactly matching homepage) ===== */
+        .site-footer {
+            background: #0f2b1c;
+            color: #ddd;
+            padding-top: 2rem;
+        }
+
+        .brand-statement {
+            text-align: center;
+            padding: 2rem 5% 1rem;
+            border-bottom: 1px solid #2c5a3a;
+        }
+
+        .brand-statement h2 {
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+            color: #ffeaac;
+        }
+
+        .segmented-line {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin: 1rem 0;
+        }
+
+        .segment {
+            height: 3px;
+            background: #adc6a9;
+        }
+
+        .segment.short { width: 35px; }
+        .segment.long { width: 70px; }
+
+        .footer-main {
+            padding: 2rem 5% 2rem;
+        }
+
+        .footer-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+
+        .footer-col {
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .footer-logo {
+            filter: brightness(0) invert(1);
+            height: 45px;
+            margin-bottom: 1rem;
+        }
+
+        .address-text, .email-text, .cc-number {
+            font-size: 0.85rem;
+            line-height: 1.4;
+            margin-bottom: 0.4rem;
+        }
+
+        .cc-title {
+            font-weight: 700;
+            margin-top: 0.7rem;
+        }
+
+        .links-col h4 {
+            color: #ffeaac;
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+        }
+
+        .links-col ul {
+            list-style: none;
+        }
+
+        .links-col li {
+            margin-bottom: 0.5rem;
+        }
+
+        .links-col a {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: 0.2s;
+        }
+
+        .links-col a:hover {
+            color: #ffd966;
+        }
+
+        .mt-space {
+            margin-top: 1.2rem;
+        }
+
+        .social-icon svg {
+            stroke: #ccc;
+            transition: 0.2s;
+        }
+
+        .social-icon a:hover svg {
+            stroke: #ffd966;
+        }
+
+        @media (max-width: 900px) {
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+            .advanced-search-bar {
+                flex-direction: column;
+                border-radius: 30px;
+                background: transparent;
+                gap: 0.8rem;
+            }
+            .search-input-group {
+                width: 100%;
+            }
+            .search-divider {
+                display: none;
+            }
+            .find-jobs-btn {
+                width: 100%;
+            }
+            .jobs-hero-text h1 {
+                font-size: 1.8rem;
+            }
+            .job-cards-grid {
+                grid-template-columns: 1fr;
+            }
+            .board-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .converter-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .converter-controls > div {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="navbar">
+    <div class="logo">
+        <img src="../assets/logo-sl.png" alt="Deshakthi Lanka Logo" onerror="this.src='https://placehold.co/150x50?text=Deshakthi'">
+    </div>
+    <nav class="nav-links">
+        <ul>
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="about.html">ABOUT US</a></li>
+            <li><a href="ContactUs.html">CONTACT US</a></li>
+            <li><a href="FindJobs.html" class="active">FIND JOBS</a></li>
+            <li><a href="employer.html">EMPLOYER</a></li>
+            <li><a href="education.html">EDUCATION</a></li>
+            <li><a href="blog.html">BLOG</a></li>
+        </ul>
+    </nav>
+    <div class="nav-action" id="nav-auth-section">
+        <a href="login.html" class="btn-register">Register / Login</a>
+    </div>
+</header>
+
+<section class="jobs-hero">
+    <div class="hero-content-wrapper">
+        <div class="jobs-hero-text">
+            <h1>Explore Global Opportunities</h1>
+            <p>Discover premium overseas career pathways with Deshakthi Lanka. We connect skilled Sri Lankan professionals with top-tier employers across the globe.</p>
+        </div>
+
+        <div class="advanced-search-bar">
+            <div class="search-input-group">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchTitle" placeholder="Job title, keywords...">
+            </div>
+            <div class="search-divider"></div>
+            <div class="search-input-group">
+                <span class="search-icon">📍</span>
+                <input type="text" id="searchLocation" placeholder="Location (e.g., Dubai)">
+            </div>
+            <div class="search-divider"></div>
+            <div class="search-input-group">
+                <span class="search-icon">📁</span>
+                <select id="searchCategory">
+                    <option value="">All Categories</option>
+                    <option value="IT">IT & Tech</option>
+                    <option value="Healthcare">Healthcare & Nursing</option>
+                    <option value="Engineering">Engineering</option>
+                    <option value="Construction">Construction</option>
+                    <option value="Hospitality">Hospitality & Tourism</option>
+                </select>
+            </div>
+            <button class="find-jobs-btn" id="searchBtn">Find Jobs →</button>
+        </div>
+    </div>
+</section>
+
+<section class="jobs-board-section" id="job-listings-start">
+    <div class="container">
+        <div class="board-header">
+            <div>
+                <p class="results-count" id="results-text">Loading latest vacancies...</p>
+                <div class="search-stats" id="search-stats"></div>
+            </div>
+            <div class="sort-filter-group">
+                <label for="sort-jobs">Filter by:</label>
+                <select id="sort-jobs" class="custom-select">
+                    <option value="all">All Jobs</option>
+                    <option value="urgent">Urgent Openings</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="report-section">
+            <div>
+                <h2>📄 Download Job Search Summary</h2>
+                <p>Export a real PDF summary of your current job search filters and the number of matching vacancies.</p>
+            </div>
+            <button class="report-btn" type="button" onclick="generateJobsReport()">Download Jobs PDF</button>
+        </div>
+
+        <div class="job-cards-grid" id="job-grid">
+            <div class="loading-spinner">
+                <p>📡 Loading jobs...</p>
+            </div>
+        </div>
+
+        <!-- Salary Converter Widget -->
+        <div class="salary-converter-card">
+            <h3>💰 Live Salary Converter</h3>
+            <p>Convert international salaries to Sri Lankan Rupees (LKR) using real-time exchange rates.</p>
+            <div class="converter-controls">
+                <div>
+                    <label>Amount</label>
+                    <input type="number" id="salaryAmount" value="3000">
+                </div>
+                <div>
+                    <label>From Currency</label>
+                    <select id="fromCurrency">
+                        <option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                        <option value="GBP">GBP</option>
+                        <option value="AED">AED</option>
+                        <option value="QAR">QAR</option>
+                        <option value="SAR">SAR</option>
+                    </select>
+                </div>
+                <div style="font-size: 1.5rem;">→</div>
+                <div>
+                    <label>To Currency</label>
+                    <select id="toCurrency">
+                        <option value="LKR">LKR</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Converted Amount</label>
+                    <div class="converter-result" id="conversionResult">Loading...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="site-footer">
+    <div class="brand-statement">
+        <h2>DESHAKTHI LANKA</h2>
+        <div class="segmented-line">
+            <span class="segment short"></span>
+            <span class="segment short"></span>
+            <span class="segment short"></span>
+            <span class="segment long"></span>
+        </div>
+        <p>From the misty highlands to the global cup, Deshakthi Lanka brings the spirit of Ceylon up.<br>
+        With heritage in every leaf and purity in every brew,<br>
+        We share the heart of Sri Lanka, especially for you</p>
+    </div>
+    <div class="footer-main">
+        <div class="footer-container">
+            <div class="footer-col company-info">
+                <img src="../assets/logo-sl.png" alt="Deshakthi Lanka Logo" class="footer-logo" onerror="this.src='https://placehold.co/120x40?text=Deshakthi'">
+                <p class="address-text">No. 123, Tea Plantation Road, Kandy, Sri Lanka</p>
+                <p class="email-text">deshakthi@gmail.com</p>
+                <div class="customer-care">
+                    <p class="cc-title">Customer Care</p>
+                    <p class="cc-number">Landline : 0112 123 456</p>
+                </div>
+            </div>
+            <div class="footer-col links-col">
+                <h4>For Job Seekers</h4>
+                <ul>
+                    <li><a href="login.html">Register</a></li>
+                    <li><a href="FindJobs.html">Find Jobs</a></li>
+                    <li><a href="login.html">Login</a></li>
+                </ul>
+                <h4 class="mt-space">For Employers</h4>
+                <ul>
+                    <li><a href="admin.html">Employer Dashboard</a></li>
+                </ul>
+            </div>
+            <div class="footer-col links-col">
+                <h4>About Us</h4>
+                <ul>
+                    <li><a href="ContactUs.html">Contact Us</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="#">Terms & Conditions</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+            <div class="footer-col reviews-col">
+                <h4>Review Us on</h4>
+                <div class="social-icon">
+                    <a href="#" aria-label="Facebook">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    const API_URL = 'http://localhost:3000/api/admin/jobs';
+    const jobGrid = document.getElementById('job-grid');
+    const resultsText = document.getElementById('results-text');
+    const searchStats = document.getElementById('search-stats');
+    let allJobsCache = [];
+
+    function checkAuth() {
+        const navAction = document.getElementById('nav-auth-section');
+        const user = localStorage.getItem('user');
+        if (user) {
+            try {
+                const userData = JSON.parse(user);
+                navAction.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <a href="candidate-dashboard.html" style="color: white; background: #ffd966; padding: 0.4rem 1rem; border-radius: 40px; text-decoration: none; font-weight: 600;"> Dashboard</a>
+                        <a href="#" class="btn-logout" onclick="logout()" style="background:white; color:#2e6f40; padding:0.4rem 1rem; border-radius:40px; text-decoration:none;">Logout</a>
+                    </div>
+                `;
+            } catch(e) { console.warn(e); }
+        } else {
+            navAction.innerHTML = `<a href="login.html" class="btn-register">Register / Login</a>`;
+        }
+    }
+
+    window.logout = function() {
+        if (confirm("Are you sure you want to log out?")) {
+            localStorage.removeItem('user');
+            alert("Logged out successfully!");
+            window.location.reload();
+        }
+    };
+
+    async function fetchJobs() {
+        try {
+            jobGrid.innerHTML = `<div class="loading-spinner"><p>📡 Fetching latest job opportunities...</p></div>`;
+            const response = await fetch(API_URL);
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            
+            const jobs = await response.json();
+            allJobsCache = jobs;
+            displayJobs(jobs);
+            updateSearchStats(jobs.length);
+        } catch (error) {
+            console.error("Error fetching jobs:", error);
+            jobGrid.innerHTML = `
+                <div class="no-results">
+                    <p>⚠️ Error connecting to server. Please ensure the backend is running.</p>
+                    <button onclick="fetchJobs()" style="padding: 10px 20px; background: #2e6f40; color: white; border: none; border-radius: 40px; cursor: pointer; margin-top:10px;">Retry</button>
+                </div>
+            `;
+            resultsText.innerHTML = `Connection error`;
+        }
+    }
+
+    function displayJobs(jobs) {
+        if (!jobs || jobs.length === 0) {
+            jobGrid.innerHTML = `
+                <div class="no-results">
+                    <p>🔍 No job vacancies found at this moment.</p>
+                    <small>Please check back later for new opportunities.</small>
+                </div>
+            `;
+            resultsText.innerHTML = `Showing <strong>0</strong> results`;
+            searchStats.innerHTML = '';
+            return;
+        }
+
+        resultsText.innerHTML = `Showing <strong>${jobs.length}</strong> job ${jobs.length === 1 ? 'opportunity' : 'opportunities'}`;
+
+        jobGrid.innerHTML = jobs.map(job => {
+            const displayImage = job.imageUrl && job.imageUrl !== 'null' && job.imageUrl !== ''
+                ? job.imageUrl
+                : 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=600&q=80';
+
+            const shortDesc = job.description && job.description.length > 100
+                ? job.description.substring(0, 100) + '...'
+                : (job.description || 'Premium international career opportunity.');
+
+            const salaryDisplay = job.salary || 'Competitive Salary';
+
+            return `
+                <div class="premium-job-card">
+                    <div class="card-image-header" style="background-image: url('${displayImage}');">
+                        <div class="badges">
+                            <span class="badge full-time">Full Time</span>
+                            ${job.isUrgent ? '<span class="badge urgent">🔥 Urgent</span>' : ''}
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h3>${escapeHtml(job.jobTitle)}</h3>
+                        <p class="job-location">📍 ${escapeHtml(job.location)}</p>
+                        ${job.category ? `<p class="job-category">📁 ${escapeHtml(job.category)}</p>` : ''}
+                        <p class="job-desc">${escapeHtml(shortDesc)}</p>
+                        <div class="card-footer">
+                            <span class="salary">💰 ${escapeHtml(salaryDisplay)}</span>
+                            <button class="apply-btn-small" onclick="checkSkillTestAndApply('${job._id}', '${job.category || 'IT'}', '${escapeHtml(job.jobTitle).replace(/'/g, "\\'")}')">Apply Now →</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    function escapeHtml(text) {
+        if (!text) return '';
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    function updateSearchStats(totalJobs) {
+        const urgentCount = allJobsCache.filter(job => job.isUrgent === true).length;
+        if (urgentCount > 0) {
+            searchStats.innerHTML = `<span style="color: #e74c3c; font-weight:600;">🔥 ${urgentCount} urgent openings available</span>`;
+        } else {
+            searchStats.innerHTML = '';
+        }
+    }
+
+    const handleSearch = async () => {
+        const titleQuery = document.getElementById('searchTitle').value.toLowerCase().trim();
+        const locQuery = document.getElementById('searchLocation').value.toLowerCase().trim();
+        const catQuery = document.getElementById('searchCategory').value.toLowerCase();
+        const filterUrgent = document.getElementById('sort-jobs').value === 'urgent';
+
+        jobGrid.innerHTML = `<div class="loading-spinner"><p>🔍 Searching for jobs...</p></div>`;
+
+        try {
+            let jobsToFilter = allJobsCache;
+            if (!jobsToFilter || jobsToFilter.length === 0) {
+                const response = await fetch(API_URL);
+                jobsToFilter = await response.json();
+                allJobsCache = jobsToFilter;
+            }
+
+            const filtered = jobsToFilter.filter(job => {
+                const matchesTitle = titleQuery === '' || (job.jobTitle && job.jobTitle.toLowerCase().includes(titleQuery));
+                const matchesLoc = locQuery === '' || (job.location && job.location.toLowerCase().includes(locQuery));
+                const matchesCat = catQuery === '' || (job.category && job.category.toLowerCase().includes(catQuery));
+                const matchesUrgent = filterUrgent ? job.isUrgent === true : true;
+
+                return matchesTitle && matchesLoc && matchesCat && matchesUrgent;
+            });
+
+            displayJobs(filtered);
+            document.getElementById('job-listings-start').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } catch (err) {
+            console.error("Search error:", err);
+            jobGrid.innerHTML = `<div class="no-results"><p>❌ Search failed. Please try again.</p></div>`;
+        }
+    };
+
+    document.getElementById('searchBtn').addEventListener('click', handleSearch);
+    document.getElementById('sort-jobs').addEventListener('change', handleSearch);
+
+    // Salary Converter
+    let rates = {};
+    async function fetchRates() {
+        try {
+            const res = await fetch('http://localhost:3000/api/currency/rates');
+            const data = await res.json();
+            rates = data.rates;
+            convertSalary();
+        } catch(e) { console.error('Rate fetch error:', e); }
+    }
+    function convertSalary() {
+        const amount = parseFloat(document.getElementById('salaryAmount')?.value) || 0;
+        const from = document.getElementById('fromCurrency')?.value;
+        let inUSD = amount;
+        if (from !== 'USD' && rates[from]) inUSD = amount / rates[from];
+        const result = inUSD * (rates.LKR || 320);
+        const resultDiv = document.getElementById('conversionResult');
+        if (resultDiv) resultDiv.innerHTML = `Rs. ${result.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+    }
+    setTimeout(() => {
+        const amountInput = document.getElementById('salaryAmount');
+        const fromSelect = document.getElementById('fromCurrency');
+        if (amountInput) amountInput.addEventListener('input', convertSalary);
+        if (fromSelect) fromSelect.addEventListener('change', convertSalary);
+        fetchRates();
+    }, 500);
+
+    function generateJobsReport() {
+        const jsPDFConstructor = window.jspdf?.jsPDF || window.jsPDF;
+        if (!jsPDFConstructor) {
+            alert('Unable to load the PDF generator. Please check your internet connection and try again.');
+            return;
+        }
+
+        const doc = new jsPDFConstructor({ unit: 'pt', format: 'a4' });
+        const title = 'Deshakthi Lanka Job Search Report';
+        const timestamp = new Date().toLocaleString();
+        const titleFilter = document.getElementById('searchTitle')?.value || 'Any title';
+        const locationFilter = document.getElementById('searchLocation')?.value || 'Any location';
+        const categoryFilter = document.getElementById('searchCategory')?.value || 'All categories';
+        const filterMode = document.getElementById('sort-jobs')?.value === 'urgent' ? 'Urgent only' : 'All vacancies';
+        const resultCount = document.querySelectorAll('.job-cards-grid .premium-job-card').length;
+
+        doc.setFontSize(18);
+        doc.text(title, 40, 60);
+        doc.setFontSize(11);
+        doc.text(`Generated on: ${timestamp}`, 40, 84);
+
+        doc.setFontSize(14);
+        doc.text('Search Filters', 40, 120);
+        doc.setFontSize(11);
+        doc.text(`Title / Keywords: ${titleFilter}`, 40, 144);
+        doc.text(`Location: ${locationFilter}`, 40, 162);
+        doc.text(`Category: ${categoryFilter}`, 40, 180);
+        doc.text(`Filter mode: ${filterMode}`, 40, 198);
+
+        doc.setFontSize(14);
+        doc.text('Results Summary', 40, 234);
+        doc.setFontSize(11);
+        doc.text(`Matching vacancies shown: ${resultCount}`, 40, 258);
+
+        doc.setFontSize(14);
+        doc.text('Highlights', 40, 294);
+        doc.setFontSize(11);
+        doc.text('Use this report when reviewing job search progress or sharing opportunities with your career coach.', 40, 318, { maxWidth: 520 });
+
+        doc.save('job-search-summary.pdf');
+    }
+
+    window.onload = () => {
+        checkAuth();
+        fetchJobs();
+    };
+
+    // Skill Test Check Function
+    window.checkSkillTestAndApply = async function(jobId, jobCategory, jobTitle) {
+        const user = localStorage.getItem('user');
+        if (!user) {
+            alert('Please login to apply for jobs.');
+            window.location.href = 'login.html';
+            return;
+        }
+        
+        const userData = JSON.parse(user);
+        
+        try {
+            const checkRes = await fetch(`http://localhost:3000/api/skill-test/check/${userData.email}/${jobCategory}`);
+            const checkData = await checkRes.json();
+            
+            if (!checkData.hasPassed) {
+                const takeTest = confirm(
+                    `⚠️ Skill Test Required\n\n` +
+                    `This job requires a skill test in ${jobCategory}.\n` +
+                    `You need to score 70% or higher (7 out of 10) to apply.\n\n` +
+                    `The test has 10 questions and takes about 10 minutes.\n\n` +
+                    `Would you like to take the test now?`
+                );
+                
+                if (takeTest) {
+                    window.location.href = `skill-test.html?category=${jobCategory}&jobId=${jobId}&return=FindJobs.html`;
+                }
+                return;
+            }
+            
+            const jobData = {
+                _id: jobId,
+                jobTitle: jobTitle,
+                category: jobCategory
+            };
+            localStorage.setItem('selectedJobData', JSON.stringify(jobData));
+            window.location.href = 'JobDetails.html';
+            
+        } catch (err) {
+            console.error('Error checking skill test:', err);
+            alert('Error checking qualifications. Please try again or contact support.');
+        }
+    };
+</script>
+
+<script src="chatbot.js"></script></body>
+</html> 

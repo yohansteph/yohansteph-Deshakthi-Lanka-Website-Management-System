@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Login & Register | Deshakthi Lanka - Global Career Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+        }
+
+        .auth-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Left Side - Branding Area */
+        .auth-visual-side {
+            flex: 1;
+            background: linear-gradient(135deg, #1e4620 0%, #2e6f40 100%);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+        }
+
+        .auth-brand-content {
+            text-align: center;
+            color: white;
+            z-index: 2;
+        }
+
+        .auth-logo {
+            width: 120px;
+            height: auto;
+            filter: brightness(0) invert(1);
+            margin-bottom: 2rem;
+        }
+
+        .auth-brand-content h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: -0.5px;
+        }
+
+        .auth-brand-content p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            max-width: 350px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Right Side - Form Area */
+        .auth-form-side {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffffff;
+            padding: 2rem;
+        }
+
+        .auth-card {
+            max-width: 450px;
+            width: 100%;
+            background: white;
+            border-radius: 32px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            border: 1px solid #e2edde;
+        }
+
+        .auth-card h2 {
+            font-size: 1.8rem;
+            color: #1e4620;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+
+        .auth-subtitle {
+            color: #5a6e5a;
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Form Styles */
+        .form-section {
+            display: none;
+            transition: all 0.3s ease;
+        }
+
+        .form-section.active {
+            display: block;
+        }
+
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .auth-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            background: #f8faf5;
+            border-radius: 16px;
+            padding: 0 1rem;
+            border: 1px solid #e2edde;
+            transition: all 0.2s;
+        }
+
+        .auth-input-wrapper:focus-within {
+            border-color: #2e6f40;
+            box-shadow: 0 0 0 2px rgba(46,111,64,0.1);
+        }
+
+        .input-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2e6f40;
+            margin-right: 0.8rem;
+        }
+
+        .auth-input-wrapper input {
+            flex: 1;
+            padding: 0.9rem 0;
+            border: none;
+            background: transparent;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .auth-input-wrapper input::placeholder {
+            color: #a0b3a0;
+        }
+
+        .otp-input {
+            text-align: center;
+            letter-spacing: 4px;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .auth-submit-btn {
+            background: #2e6f40;
+            color: white;
+            padding: 0.9rem;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 0.5rem;
+        }
+
+        .auth-submit-btn:hover {
+            background: #1c5a34;
+            transform: translateY(-2px);
+        }
+
+        .auth-submit-btn:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .error-msg {
+            color: #e74c3c;
+            font-size: 0.75rem;
+            text-align: center;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .success-msg {
+            color: #2e6f40;
+            font-size: 0.75rem;
+            text-align: center;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .auth-footer-links {
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+
+        .forgot-pwd-link {
+            color: #2e6f40;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .forgot-pwd-link:hover {
+            text-decoration: underline;
+        }
+
+        .signup-prompt {
+            font-size: 0.85rem;
+            color: #5a6e5a;
+        }
+
+        .toggle-link {
+            color: #2e6f40;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .toggle-link:hover {
+            text-decoration: underline;
+        }
+
+        .back-to-web-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            color: #5a6e5a;
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: 0.2s;
+        }
+
+        .back-to-web-link:hover {
+            color: #2e6f40;
+        }
+
+        .resend-otp-btn {
+            background: none;
+            border: none;
+            color: #2e6f40;
+            font-size: 0.75rem;
+            cursor: pointer;
+            text-decoration: underline;
+            margin-top: 0.5rem;
+        }
+
+        .resend-otp-btn:hover {
+            color: #1c5a34;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .auth-layout {
+                flex-direction: column;
+            }
+            .auth-visual-side {
+                padding: 2rem;
+                min-height: 250px;
+            }
+            .auth-brand-content h1 {
+                font-size: 1.5rem;
+            }
+            .auth-logo {
+                width: 80px;
+                margin-bottom: 1rem;
+            }
+            .auth-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="auth-layout">
+    <div class="auth-visual-side">
+        <div class="auth-brand-content">
+            <img src="../assets/logo-sl.png" alt="Deshakthi Lanka Logo" class="auth-logo" onerror="this.src='https://placehold.co/120x120?text=Deshakthi'">
+            <h1>Welcome to Deshakthi Lanka</h1>
+            <p>Your gateway to premium global career opportunities and top-tier Sri Lankan talent.</p>
+        </div>
+    </div>
+
+    <div class="auth-form-side">
+        <div class="auth-card">
+            <h2 id="auth-title">Login</h2>
+            <p class="auth-subtitle" id="auth-subtitle">Please enter your credentials to continue.</p>
+
+            <div id="login-section" class="form-section active">
+                <form id="loginForm" class="auth-form">
+                    <div class="auth-input-wrapper">
+                        <div class="input-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </div>
+                        <input type="text" id="log-email" placeholder="Email Address" required>
+                    </div>
+                    <div class="auth-input-wrapper">
+                        <div class="input-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                        </div>
+                        <input type="password" id="log-password" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="auth-submit-btn" id="loginBtn">Sign In →</button>
+                    <div id="login-error" class="error-msg">Invalid credentials. Please try again.</div>
+                </form>
+
+                <div class="auth-footer-links">
+                    <a href="#" id="show-forgot-pwd" class="forgot-pwd-link">Forgot Password?</a>
+                    <div class="signup-prompt">
+                        Don't have an account? <a href="#" id="show-signup" class="toggle-link">Sign up here</a>
+                    </div>
+                    <a href="index.html" class="back-to-web-link">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="19" y1="12" x2="5" y2="12"></line>
+                            <polyline points="12 19 5 12 12 5"></polyline>
+                        </svg>
+                        Visit the website
+                    </a>
+                </div>
+            </div>
+
+            <div id="signup-section" class="form-section">
+                <form id="signupForm" class="auth-form">
+                    <div class="auth-input-wrapper">
+                        <div class="input-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </div>
+                        <input type="text" id="reg-name" placeholder="Full Name" required>
+                    </div>
+                    <div class="auth-input-wrapper">
+                        <div class="input-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                        </div>
+                        <input type="email" id="reg-email" placeholder="Email Address" required>
+                    </div>
+                    <div class="auth-input-wrapper">
+                        <div class="input-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                            </svg>
+                        </div>
+                        <input type="tel" id="reg-phone" placeholder="Phone Number" required>
+                    </div>
+                    <div class="auth-input-wrapper">
+                        <div class="input-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                        </div>
+                        <input type="password" id="reg-password" placeholder="Create Password" required>
+                    </div>
+                    <div class="auth-input-wrapper">
+                        <div class="input-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            </svg>
+                        </div>
+                        <input type="password" id="reg-confirm" placeholder="Confirm Password" required>
+                    </div>
+                    <button type="submit" class="auth-submit-btn">Create Account →</button>
+                </form>
+                <div class="auth-footer-links">
+                    <div class="signup-prompt" style="margin-top: 15px;">
+                        Already have an account? <a href="#" class="toggle-link back-to-login">Login here</a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="forgot-step-1" class="form-section">
+                <form id="form-request-otp" class="auth-form">
+                    <div class="auth-input-wrapper">
+                        <div class="input-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                        </div>
+                        <input type="email" id="forgot-email" placeholder="Registered Email Address" required>
+                    </div>
+                    <button type="submit" class="auth-submit-btn" id="sendOtpBtn">Send OTP to Email →</button>
+                    <div id="otp-request-error" class="error-msg"></div>
+                </form>
+                <div class="auth-footer-links">
+                    <a href="#" class="toggle-link back-to-login" style="margin-top: 15px;">← Back to Login</a>
+                </div>
+            </div>
+
+            <div id="forgot-step-2" class="form-section">
+                <form id="form-verify-otp" class="auth-form">
+                    <div class="auth-input-wrapper">
+                        <input type="text" id="otp-code" class="otp-input" placeholder="000000" maxlength="6" required>
+                    </div>
+                    <p style="font-size: 12px; color: #5a6e5a; margin-top: 10px; text-align: center;">Check your email for the 6-digit OTP code.</p>
+                    <button type="submit" class="auth-submit-btn" id="verifyOtpBtn">Verify Code →</button>
+                    <button type="button" class="resend-otp-btn" id="resendOtpBtn">Resend OTP</button>
+                    <div id="otp-verify-error" class="error-msg"></div>
+                </form>
+            </div>
+
+            <div id="forgot-step-3" class="form-section">
+                <form id="form-reset-pwd" class="auth-form">
+                    <div class="auth-input-wrapper">
+                        <div class="input-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                        </div>
+                        <input type="password" id="new-password" placeholder="New Password" required>
+                    </div>
+                    <div class="auth-input-wrapper">
+                        <div class="input-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            </svg>
+                        </div>
+                        <input type="password" id="new-confirm" placeholder="Confirm New Password" required>
+                    </div>
+                    <button type="submit" class="auth-submit-btn" id="resetPwdBtn">Update Password →</button>
+                    <div id="reset-error" class="error-msg"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const API_BASE = 'http://localhost:3000/api/auth';
+        const OTP_API = 'http://localhost:3000/api/otp';
+        
+        let resetEmail = '';
+        let resetOtpCode = '';
+
+        const authTitle = document.getElementById('auth-title');
+        const authSubtitle = document.getElementById('auth-subtitle');
+        const sections = {
+            login: document.getElementById('login-section'),
+            signup: document.getElementById('signup-section'),
+            forgot1: document.getElementById('forgot-step-1'),
+            forgot2: document.getElementById('forgot-step-2'),
+            forgot3: document.getElementById('forgot-step-3')
+        };
+
+        function switchSection(showKey, title, subtitle) {
+            Object.values(sections).forEach(sec => {
+                sec.classList.remove('active');
+                sec.style.display = 'none';
+            });
+            sections[showKey].style.display = 'block';
+            setTimeout(() => sections[showKey].classList.add('active'), 10);
+            authTitle.innerText = title;
+            authSubtitle.innerText = subtitle;
+        }
+
+        // Initialize - show login section
+        switchSection('login', 'Login', 'Please enter your credentials to continue.');
+
+        document.getElementById('show-signup').addEventListener('click', (e) => {
+            e.preventDefault();
+            switchSection('signup', 'Create Account', 'Join us to unlock global career opportunities.');
+        });
+
+        document.querySelectorAll('.back-to-login').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                switchSection('login', 'Login', 'Please enter your credentials to continue.');
+            });
+        });
+
+        document.getElementById('show-forgot-pwd').addEventListener('click', (e) => {
+            e.preventDefault();
+            resetEmail = '';
+            resetOtpCode = '';
+            document.getElementById('forgot-email').value = '';
+            document.getElementById('otp-code').value = '';
+            document.getElementById('new-password').value = '';
+            document.getElementById('new-confirm').value = '';
+            switchSection('forgot1', 'Reset Password', 'Enter your registered email address to receive OTP.');
+        });
+
+        // ============================================
+        // LOGIN FORM SUBMIT
+        // ============================================
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const loginBtn = document.getElementById('loginBtn');
+            const email = document.getElementById('log-email').value;
+            const password = document.getElementById('log-password').value;
+
+            loginBtn.disabled = true;
+            loginBtn.textContent = 'Logging in...';
+
+            // Admin Hardcoded Login
+            if (email === "admin@deshakthi.com" && password === "admin123") {
+                const adminUser = {
+                    _id: 'admin_' + Date.now(),
+                    fullName: 'Administrator',
+                    email: 'admin@deshakthi.com',
+                    phone: '1234567890',
+                    isAdmin: true,
+                    createdAt: new Date().toISOString()
+                };
+                localStorage.setItem('user', JSON.stringify(adminUser));
+                alert("✅ Admin Access Granted! Redirecting to Admin Panel...");
+                window.location.href = 'admin.html';
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API_BASE}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    alert(`✅ Welcome back, ${data.user.fullName}!`);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    window.location.href = 'candidate-dashboard.html';
+                } else {
+                    alert(data.error || 'Invalid credentials');
+                    document.getElementById('login-error').style.display = 'block';
+                }
+            } catch (err) {
+                console.error('Login error:', err);
+                alert("⚠️ Login failed. Is the server running at localhost:3000?");
+            } finally {
+                loginBtn.disabled = false;
+                loginBtn.textContent = 'Sign In →';
+            }
+        });
+
+        // ============================================
+        // SIGNUP FORM SUBMIT (With Email Notification)
+        // ============================================
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const signupBtn = document.querySelector('#signup-section .auth-submit-btn');
+            const fullName = document.getElementById('reg-name').value;
+            const email = document.getElementById('reg-email').value;
+            const phone = document.getElementById('reg-phone').value;
+            const password = document.getElementById('reg-password').value;
+            const confirm = document.getElementById('reg-confirm').value;
+
+            if (password !== confirm) {
+                alert("❌ Passwords do not match!");
+                return;
+            }
+
+            signupBtn.disabled = true;
+            signupBtn.textContent = 'Creating Account...';
+
+            try {
+                const res = await fetch(`${API_BASE}/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ fullName, email, phone, password })
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    // Send welcome email notification
+                    try {
+                        await fetch(`${API_BASE}/send-welcome-email`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email, fullName })
+                        });
+                    } catch (emailErr) {
+                        console.log('Welcome email notification sent');
+                    }
+                    
+                    alert("✅ Registration Successful! A welcome email has been sent to your inbox. Please Login.");
+                    document.getElementById('signupForm').reset();
+                    switchSection('login', 'Login', 'Please enter your credentials to continue.');
+                } else {
+                    alert(data.error || 'Registration failed');
+                }
+            } catch (err) {
+                console.error('Registration error:', err);
+                alert("⚠️ Connection failed. Is the server running at localhost:3000?");
+            } finally {
+                signupBtn.disabled = false;
+                signupBtn.textContent = 'Create Account →';
+            }
+        });
+
+        // ============================================
+        // REQUEST OTP VIA EMAIL (Forgot Password)
+        // ============================================
+        document.getElementById('form-request-otp').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('forgot-email').value;
+            const sendBtn = document.getElementById('sendOtpBtn');
+            
+            if (!email) {
+                document.getElementById('otp-request-error').innerText = 'Please enter your email address.';
+                document.getElementById('otp-request-error').style.display = 'block';
+                return;
+            }
+            
+            sendBtn.disabled = true;
+            sendBtn.textContent = 'Sending OTP...';
+            document.getElementById('otp-request-error').style.display = 'none';
+            
+            try {
+                // First check if user exists with this email
+                const checkRes = await fetch(`${API_BASE}/check-user`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+                
+                const checkData = await checkRes.json();
+                
+                if (!checkData.exists) {
+                    document.getElementById('otp-request-error').innerText = 'No account found with this email address.';
+                    document.getElementById('otp-request-error').style.display = 'block';
+                    sendBtn.disabled = false;
+                    sendBtn.textContent = 'Send OTP to Email →';
+                    return;
+                }
+                
+                // Send OTP via email
+                const otpRes = await fetch(`${OTP_API}/send-reset-otp`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+                
+                const otpData = await otpRes.json();
+                
+                if (otpRes.ok) {
+                    resetEmail = email;
+                    resetOtpCode = otpData.otp;
+                    alert(`📧 An OTP code has been sent to ${email}. Please check your inbox.`);
+                    document.getElementById('otp-code').value = '';
+                    switchSection('forgot2', 'Verify OTP', 'Enter the 6-digit code sent to your email.');
+                } else {
+                    document.getElementById('otp-request-error').innerText = otpData.error || 'Failed to send OTP. Please try again.';
+                    document.getElementById('otp-request-error').style.display = 'block';
+                }
+            } catch (err) {
+                console.error('OTP request error:', err);
+                document.getElementById('otp-request-error').innerText = 'Network error. Please try again.';
+                document.getElementById('otp-request-error').style.display = 'block';
+            } finally {
+                sendBtn.disabled = false;
+                sendBtn.textContent = 'Send OTP to Email →';
+            }
+        });
+
+        // ============================================
+        // RESEND OTP
+        // ============================================
+        document.getElementById('resendOtpBtn').addEventListener('click', async () => {
+            if (!resetEmail) {
+                alert('Please go back and enter your email again.');
+                switchSection('forgot1', 'Reset Password', 'Enter your registered email address to receive OTP.');
+                return;
+            }
+            
+            const resendBtn = document.getElementById('resendOtpBtn');
+            resendBtn.disabled = true;
+            resendBtn.textContent = 'Sending...';
+            
+            try {
+                const otpRes = await fetch(`${OTP_API}/send-reset-otp`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: resetEmail })
+                });
+                
+                const otpData = await otpRes.json();
+                
+                if (otpRes.ok) {
+                    resetOtpCode = otpData.otp;
+                    alert(`📧 A new OTP code has been sent to ${resetEmail}.`);
+                } else {
+                    alert('Failed to resend OTP. Please try again.');
+                }
+            } catch (err) {
+                console.error('Resend OTP error:', err);
+                alert('Network error. Please try again.');
+            } finally {
+                resendBtn.disabled = false;
+                resendBtn.textContent = 'Resend OTP';
+            }
+        });
+
+        // ============================================
+        // VERIFY OTP
+        // ============================================
+        document.getElementById('form-verify-otp').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const otpCode = document.getElementById('otp-code').value;
+            const verifyBtn = document.getElementById('verifyOtpBtn');
+            
+            if (!otpCode || otpCode.length < 4) {
+                document.getElementById('otp-verify-error').innerText = 'Please enter the 6-digit OTP code.';
+                document.getElementById('otp-verify-error').style.display = 'block';
+                return;
+            }
+            
+            verifyBtn.disabled = true;
+            verifyBtn.textContent = 'Verifying...';
+            document.getElementById('otp-verify-error').style.display = 'none';
+            
+            try {
+                const verifyRes = await fetch(`${OTP_API}/verify-reset-otp`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: resetEmail, otp: otpCode })
+                });
+                
+                const verifyData = await verifyRes.json();
+                
+                if (verifyRes.ok) {
+                    alert('✅ OTP verified successfully! Please set your new password.');
+                    switchSection('forgot3', 'Create New Password', 'Please set your new account password.');
+                } else {
+                    document.getElementById('otp-verify-error').innerText = verifyData.error || 'Invalid OTP. Please try again.';
+                    document.getElementById('otp-verify-error').style.display = 'block';
+                }
+            } catch (err) {
+                console.error('OTP verification error:', err);
+                document.getElementById('otp-verify-error').innerText = 'Network error. Please try again.';
+                document.getElementById('otp-verify-error').style.display = 'block';
+            } finally {
+                verifyBtn.disabled = false;
+                verifyBtn.textContent = 'Verify Code →';
+            }
+        });
+
+        // ============================================
+        // RESET PASSWORD
+        // ============================================
+        document.getElementById('form-reset-pwd').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const newPassword = document.getElementById('new-password').value;
+            const confirmPassword = document.getElementById('new-confirm').value;
+            const resetBtn = document.getElementById('resetPwdBtn');
+            
+            if (newPassword !== confirmPassword) {
+                document.getElementById('reset-error').innerText = 'Passwords do not match!';
+                document.getElementById('reset-error').style.display = 'block';
+                return;
+            }
+            
+            if (newPassword.length < 6) {
+                document.getElementById('reset-error').innerText = 'Password must be at least 6 characters.';
+                document.getElementById('reset-error').style.display = 'block';
+                return;
+            }
+            
+            resetBtn.disabled = true;
+            resetBtn.textContent = 'Updating...';
+            document.getElementById('reset-error').style.display = 'none';
+            
+            try {
+                const resetRes = await fetch(`${API_BASE}/reset-password`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: resetEmail, newPassword })
+                });
+                
+                const resetData = await resetRes.json();
+                
+                if (resetRes.ok) {
+                    alert('✅ Password updated successfully! Please login with your new password.');
+                    switchSection('login', 'Login', 'Please enter your credentials to continue.');
+                } else {
+                    document.getElementById('reset-error').innerText = resetData.error || 'Failed to update password.';
+                    document.getElementById('reset-error').style.display = 'block';
+                }
+            } catch (err) {
+                console.error('Password reset error:', err);
+                document.getElementById('reset-error').innerText = 'Network error. Please try again.';
+                document.getElementById('reset-error').style.display = 'block';
+            } finally {
+                resetBtn.disabled = false;
+                resetBtn.textContent = 'Update Password →';
+            }
+        });
+    });
+</script>
+</body>
+</html>

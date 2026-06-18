@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skill Assessment Test | Deshakthi Lanka</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #002244 0%, #1c884c 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .test-header {
+            background: linear-gradient(135deg, #002244, #1c884c);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .test-header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .test-header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            color: #856404;
+            padding: 12px;
+            text-align: center;
+            font-size: 13px;
+            border-bottom: 1px solid #ffecb5;
+        }
+
+        .timer-container {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .timer {
+            font-size: 32px;
+            font-weight: 700;
+            color: #e74c3c;
+            background: white;
+            display: inline-block;
+            padding: 10px 25px;
+            border-radius: 50px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            font-family: monospace;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: #e9ecef;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #1c884c;
+            transition: width 0.3s ease;
+        }
+
+        .questions-container {
+            padding: 30px;
+            min-height: 400px;
+        }
+
+        .question-card {
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .question-text {
+            font-size: 20px;
+            font-weight: 600;
+            color: #002244;
+            margin-bottom: 25px;
+            line-height: 1.4;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .option:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+
+        .option.selected {
+            background: #d4edda;
+            border-color: #1c884c;
+        }
+
+        .option-radio {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 2px solid #ccc;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .option.selected .option-radio {
+            border-color: #1c884c;
+        }
+
+        .option.selected .option-radio::after {
+            content: '';
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #1c884c;
+        }
+
+        .option-text {
+            flex: 1;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .nav-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .prev-btn {
+            background: #6c757d;
+            color: white;
+        }
+
+        .prev-btn:hover:not(:disabled) {
+            background: #5a6268;
+            transform: translateX(-2px);
+        }
+
+        .prev-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .next-btn {
+            background: #002244;
+            color: white;
+        }
+
+        .next-btn:hover {
+            background: #001a33;
+            transform: translateX(2px);
+        }
+
+        .submit-btn {
+            background: #1c884c;
+            color: white;
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            background: #146638;
+            transform: translateY(-2px);
+        }
+
+        .result-card {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .result-pass {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+
+        .result-fail {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+
+        .result-score {
+            font-size: 48px;
+            font-weight: 700;
+            color: #002244;
+            margin: 20px 0;
+        }
+
+        .result-message {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .badge-earned {
+            background: #f1c40f;
+            color: #333;
+            padding: 12px 25px;
+            border-radius: 30px;
+            display: inline-block;
+            font-weight: 600;
+            margin: 20px 0;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .action-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn.primary {
+            background: #1c884c;
+            color: white;
+        }
+
+        .action-btn.secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .lockout-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 20px;
+        }
+
+        .question-counter {
+            text-align: center;
+            margin-top: 15px;
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .passing-info {
+            background: #d4edda;
+            color: #155724;
+            padding: 10px;
+            text-align: center;
+            font-size: 13px;
+            border-bottom: 1px solid #c3e6cb;
+        }
+
+        @media (max-width: 768px) {
+            .test-container {
+                margin: 0;
+                border-radius: 0;
+            }
+            .questions-container {
+                padding: 20px;
+            }
+            .question-text {
+                font-size: 18px;
+            }
+            .option {
+                padding: 12px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="test-container" id="testContainer">
+    <div class="test-header">
+        <h1>🎓 Industry Skill Assessment</h1>
+        <p>Complete this test to qualify for job applications</p>
+    </div>
+    <div class="passing-info">
+        ✅ You need 70% (7 out of 10) to pass. Failed attempts lock you out for 24 hours.
+    </div>
+    <div class="warning-box">
+        ⚠️ Please read each question carefully. You have 10 minutes to complete the test.
+    </div>
+    <div id="dynamicContent">
+        <!-- Content loaded dynamically -->
+    </div>
+</div>
+
+<script>
+    // Get URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const category = urlParams.get('category');
+    const jobId = urlParams.get('jobId');
+    const returnUrl = urlParams.get('return') || 'FindJobs.html';
+    
+    // Get logged in user
+    let user = null;
+    try {
+        const userData = localStorage.getItem('user');
+        if (userData) {
+            user = JSON.parse(userData);
+        }
+    } catch(e) {
+        console.error('Error parsing user data');
+    }
+    
+    // Check authentication
+    if (!user) {
+        alert('Please login to take the skill test.');
+        window.location.href = 'login.html';
+    }
+    
+    let questions = [];
+    let userAnswers = [];
+    let currentQuestion = 0;
+    let timeLeft = 600; // 10 minutes in seconds
+    let timerInterval;
+    let testStarted = false;
+    
+    // Category display names
+    const categoryNames = {
+        'IT': 'Information Technology',
+        'Healthcare': 'Healthcare & Nursing',
+        'Engineering': 'Engineering',
+        'Construction': 'Construction',
+        'Hospitality': 'Hospitality & Tourism'
+    };
+    
+    // Load test from backend
+    async function loadTest() {
+        if (!category) {
+            showError('No category selected. Please go back and select a job category.');
+            return;
+        }
+        
+        showLoading();
+        
+        try {
+            // Check if user already passed this test
+            const checkRes = await fetch(`http://localhost:3000/api/skill-test/check/${user.email}/${category}`);
+            const checkData = await checkRes.json();
+            
+            if (checkData.hasPassed) {
+                showAlreadyPassed();
+                return;
+            }
+            
+            // Fetch test questions
+            const testRes = await fetch(`http://localhost:3000/api/skill-test/${category}`);
+            
+            if (!testRes.ok) {
+                throw new Error('Failed to load test');
+            }
+            
+            const testData = await testRes.json();
+            questions = testData.questions;
+            userAnswers = new Array(questions.length).fill(null);
+            
+            if (questions.length === 0) {
+                showError('No questions available for this category.');
+                return;
+            }
+            
+            // Start the test
+            startTest();
+            
+        } catch (err) {
+            console.error('Error loading test:', err);
+            showError('Failed to load test. Please make sure the server is running.');
+        }
+    }
+    
+    function showLoading() {
+        document.getElementById('dynamicContent').innerHTML = `
+            <div style="text-align: center; padding: 60px;">
+                <div style="font-size: 40px; margin-bottom: 20px;">📚</div>
+                <p>Loading your assessment for ${categoryNames[category] || category}...</p>
+            </div>
+        `;
+    }
+    
+    function showAlreadyPassed() {
+        document.getElementById('dynamicContent').innerHTML = `
+            <div class="result-card">
+                <div class="result-pass">✅</div>
+                <h2>You've Already Passed This Test!</h2>
+                <p style="color: #555; margin: 20px 0;">You have already qualified for ${categoryNames[category] || category} jobs.</p>
+                <div class="badge-earned">🏅 Verified Skill Badge Earned</div>
+                <div class="action-buttons">
+                    <a href="${returnUrl}" class="action-btn primary">Browse Jobs →</a>
+                </div>
+            </div>
+        `;
+    }
+    
+    function showError(message) {
+        document.getElementById('dynamicContent').innerHTML = `
+            <div class="result-card">
+                <div class="result-fail">❌</div>
+                <h2>Error Loading Test</h2>
+                <p style="color: #555; margin: 20px 0;">${message}</p>
+                <div class="action-buttons">
+                    <a href="${returnUrl}" class="action-btn secondary">← Back to Jobs</a>
+                </div>
+            </div>
+        `;
+    }
+    
+    function startTest() {
+        testStarted = true;
+        startTimer();
+        
+        document.getElementById('dynamicContent').innerHTML = `
+            <div class="timer-container">
+                <div class="timer" id="timerDisplay">10:00</div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+            <div class="questions-container" id="questionsContainer"></div>
+            <div class="question-counter" id="questionCounter"></div>
+            <div class="nav-buttons" id="navButtons"></div>
+            <button class="nav-btn submit-btn" id="submitBtn">✅ Submit Test</button>
+        `;
+        
+        renderQuestion();
+        
+        document.getElementById('submitBtn').addEventListener('click', submitTest);
+    }
+    
+    function startTimer() {
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            const timerDisplay = document.getElementById('timerDisplay');
+            if (timerDisplay) {
+                timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                // Change color when time is low
+                if (timeLeft <= 60) {
+                    timerDisplay.style.color = '#e74c3c';
+                    timerDisplay.style.animation = 'pulse 1s infinite';
+                }
+                if (timeLeft <= 30) {
+                    timerDisplay.style.backgroundColor = '#fee2e2';
+                }
+            }
+            
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                submitTest();
+            }
+        }, 1000);
+    }
+    
+    function renderQuestion() {
+        const q = questions[currentQuestion];
+        const container = document.getElementById('questionsContainer');
+        const navContainer = document.getElementById('navButtons');
+        const counter = document.getElementById('questionCounter');
+        const progressFill = document.getElementById('progressFill');
+        
+        // Update progress
+        const progress = ((currentQuestion + 1) / questions.length) * 100;
+        if (progressFill) progressFill.style.width = `${progress}%`;
+        
+        // Update counter
+        if (counter) {
+            counter.innerHTML = `Question ${currentQuestion + 1} of ${questions.length}`;
+        }
+        
+        // Render question
+        container.innerHTML = `
+            <div class="question-card">
+                <div class="question-text">${escapeHtml(q.question)}</div>
+                <div class="options-list" id="optionsList">
+                    ${q.options.map((opt, idx) => `
+                        <div class="option ${userAnswers[currentQuestion] === idx ? 'selected' : ''}" data-option-index="${idx}">
+                            <div class="option-radio"></div>
+                            <div class="option-text">${String.fromCharCode(65 + idx)}. ${escapeHtml(opt)}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+        
+        // Add click handlers to options
+        document.querySelectorAll('.option').forEach(opt => {
+            opt.addEventListener('click', () => {
+                const selectedIndex = parseInt(opt.dataset.optionIndex);
+                userAnswers[currentQuestion] = selectedIndex;
+                
+                // Update UI
+                document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+                opt.classList.add('selected');
+            });
+        });
+        
+        // Render navigation buttons
+        navContainer.innerHTML = `
+            <button class="nav-btn prev-btn" id="prevBtn" ${currentQuestion === 0 ? 'disabled' : ''}>← Previous</button>
+            <button class="nav-btn next-btn" id="nextBtn">${currentQuestion === questions.length - 1 ? 'Review' : 'Next →'}</button>
+        `;
+        
+        document.getElementById('prevBtn')?.addEventListener('click', () => {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                renderQuestion();
+            }
+        });
+        
+        document.getElementById('nextBtn')?.addEventListener('click', () => {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                renderQuestion();
+            } else {
+                // On last question, just scroll to submit button
+                document.getElementById('submitBtn').scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    }
+    
+    async function submitTest() {
+        clearInterval(timerInterval);
+        
+        // Check for unanswered questions
+        const unanswered = userAnswers.filter(a => a === null).length;
+        if (unanswered > 0) {
+            if (!confirm(`You have ${unanswered} unanswered question(s). Submit anyway?`)) {
+                startTimer();
+                return;
+            }
+        }
+        
+        const submitBtn = document.getElementById('submitBtn');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Submitting...';
+        
+        try {
+            const response = await fetch('http://localhost:3000/api/skill-test/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: user.email,
+                    category: category,
+                    answers: userAnswers,
+                    jobId: jobId
+                })
+            });
+            
+            const result = await response.json();
+            
+            if (result.passed) {
+                showPassedResult(result);
+            } else {
+                showFailedResult(result);
+            }
+            
+        } catch (err) {
+            console.error('Submit error:', err);
+            alert('Error submitting test. Please try again.');
+            submitBtn.disabled = false;
+            submitBtn.textContent = '✅ Submit Test';
+            startTimer();
+        }
+    }
+    
+    function showPassedResult(result) {
+        document.getElementById('dynamicContent').innerHTML = `
+            <div class="result-card">
+                <div class="result-pass">🎉 PASSED! 🎉</div>
+                <div class="result-score">${result.score}/${result.totalQuestions}</div>
+                <div class="result-message">You scored ${result.percentage}% - Required: 70%</div>
+                <div class="badge-earned">🏅 Verified Skill Badge Earned</div>
+                <p style="margin: 20px 0; color: #555;">
+                    Congratulations! You are now qualified to apply for ${categoryNames[category] || category} jobs.
+                </p>
+                <div class="action-buttons">
+                    <a href="${returnUrl}" class="action-btn primary">Browse Jobs →</a>
+                </div>
+            </div>
+        `;
+    }
+    
+    function showFailedResult(result) {
+        document.getElementById('dynamicContent').innerHTML = `
+            <div class="result-card">
+                <div class="result-fail">❌ FAILED</div>
+                <div class="result-score">${result.score}/${result.totalQuestions}</div>
+                <div class="result-message">You scored ${result.percentage}% - Required: 70%</div>
+                <div class="lockout-message">
+                    ⏰ You have been locked out for 24 hours. Please try again tomorrow.
+                </div>
+                <div class="action-buttons">
+                    <a href="${returnUrl}" class="action-btn secondary">← Back to Jobs</a>
+                </div>
+            </div>
+        `;
+    }
+    
+    function escapeHtml(text) {
+        if (!text) return '';
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+    
+    // Start the test
+    loadTest();
+</script>
+</body>
+</html>

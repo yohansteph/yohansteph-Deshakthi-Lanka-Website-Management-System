@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>About Us | Deshakthi Lanka - Your Global Career Partner</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #ffffff;
+            color: #1e2a3e;
+            overflow-x: hidden;
+        }
+
+        /* ===== NAVBAR (Exactly matching homepage) ===== */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 5%;
+            background-color: #2e6f40;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            flex-wrap: wrap;
+        }
+
+        .logo img {
+            height: 48px;
+            width: auto;
+            filter: brightness(0) invert(1);
+        }
+
+        .nav-links ul {
+            display: flex;
+            gap: 1.8rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: white;
+            transition: 0.2s;
+            letter-spacing: 0.3px;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #ffd966;
+            border-bottom: 2px solid #ffd966;
+            padding-bottom: 4px;
+        }
+
+        .nav-action .btn-register {
+            background: white;
+            color: #2e6f40;
+            padding: 0.5rem 1.4rem;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .nav-action .btn-register:hover {
+            background: #ffd966;
+            color: #1e4620;
+            transform: translateY(-2px);
+        }
+
+        .btn-logout {
+            background: #fff0e0;
+            color: #2e6f40;
+            padding: 0.5rem 1.4rem;
+            border-radius: 40px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        /* ===== PAGE HEADER with subtle background ===== */
+        .page-header {
+            background: linear-gradient(135deg, #e8f3ec 0%, #d4e8da 100%);
+            padding: 3rem 5%;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            color: #1e4620;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            font-size: 1.1rem;
+            color: #4a6741;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* ===== Container ===== */
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 5%;
+        }
+
+        .section-title {
+            font-size: 2.4rem;
+            text-align: center;
+            color: #1e4620;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 3px;
+            background: #ffd966;
+            margin: 0.8rem auto 0;
+            border-radius: 2px;
+        }
+
+        /* ===== OUR STORY SECTION ===== */
+        .about-story {
+            padding: 4rem 0;
+            background: #ffffff;
+        }
+
+        .story-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .story-image-wrapper {
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 20px 35px rgba(0,0,0,0.1);
+        }
+
+        .story-image-wrapper img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .story-image-wrapper:hover img {
+            transform: scale(1.02);
+        }
+
+        .story-text p {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #4a5568;
+            margin-bottom: 1.2rem;
+        }
+
+        /* ===== CORE VALUES ===== */
+        .core-values {
+            padding: 4rem 0;
+            background: #f8faf5;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .value-card {
+            background: white;
+            padding: 2rem 1.5rem;
+            border-radius: 24px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            border: 1px solid #e2edde;
+        }
+
+        .value-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 35px rgba(46,111,64,0.12);
+        }
+
+        .value-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 1.2rem;
+            background: #2e6f40;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .value-card h3 {
+            font-size: 1.3rem;
+            color: #1e4620;
+            margin-bottom: 0.8rem;
+        }
+
+        .value-card p {
+            color: #5a6e5a;
+            line-height: 1.6;
+            font-size: 0.9rem;
+        }
+
+        /* ===== MEET THE TEAM ===== */
+        .about-team {
+            padding: 4rem 0;
+            background: #ffffff;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2rem;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .team-member {
+            transition: transform 0.3s ease;
+        }
+
+        .team-member:hover {
+            transform: translateY(-5px);
+        }
+
+        .member-img {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+            border: 4px solid #ffd966;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .member-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1e4620;
+            margin: 0.5rem 0 0.2rem;
+        }
+
+        .member-role {
+            color: #2e6f40;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* ===== WHY CHOOSE US (Matching homepage style) ===== */
+        .why-choose-us {
+            padding: 4rem 0;
+            background: linear-gradient(135deg, #1e4620 0%, #2e6f40 100%);
+            color: white;
+        }
+
+        .why-choose-us .section-title {
+            color: white;
+        }
+
+        .why-choose-us .section-title:after {
+            background: #ffd966;
+        }
+
+        .why-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .why-image-wrapper {
+            position: relative;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 20px 35px rgba(0,0,0,0.2);
+        }
+
+        .why-image-wrapper img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .experience-badge {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: #ffd966;
+            padding: 1.2rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .badge-number {
+            display: block;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #1e4620;
+            line-height: 1;
+        }
+
+        .badge-text {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #1e4620;
+        }
+
+        .why-content .why-intro {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+        }
+
+        .features-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .feature-item {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .feature-text h4 {
+            font-size: 1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .feature-text p {
+            opacity: 0.8;
+            line-height: 1.4;
+            font-size: 0.85rem;
+        }
+
+        /* ===== FOOTER (Exactly matching homepage) ===== */
+        .site-footer {
+            background: #0f2b1c;
+            color: #ddd;
+            padding-top: 2rem;
+        }
+
+        .brand-statement {
+            text-align: center;
+            padding: 2rem 5% 1rem;
+            border-bottom: 1px solid #2c5a3a;
+        }
+
+        .brand-statement h2 {
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+            color: #ffeaac;
+        }
+
+        .segmented-line {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin: 1rem 0;
+        }
+
+        .segment {
+            height: 3px;
+            background: #adc6a9;
+        }
+
+        .segment.short { width: 35px; }
+        .segment.long { width: 70px; }
+
+        .footer-main {
+            padding: 2rem 5% 2rem;
+        }
+
+        .footer-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+
+        .footer-col {
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .footer-logo {
+            filter: brightness(0) invert(1);
+            height: 45px;
+            margin-bottom: 1rem;
+        }
+
+        .address-text, .email-text, .cc-number {
+            font-size: 0.85rem;
+            line-height: 1.4;
+            margin-bottom: 0.4rem;
+        }
+
+        .cc-title {
+            font-weight: 700;
+            margin-top: 0.7rem;
+        }
+
+        .links-col h4 {
+            color: #ffeaac;
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+        }
+
+        .links-col ul {
+            list-style: none;
+        }
+
+        .links-col li {
+            margin-bottom: 0.5rem;
+        }
+
+        .links-col a {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: 0.2s;
+        }
+
+        .links-col a:hover {
+            color: #ffd966;
+        }
+
+        .mt-space {
+            margin-top: 1.2rem;
+        }
+
+        .social-icon svg {
+            stroke: #ccc;
+            transition: 0.2s;
+        }
+
+        .social-icon a:hover svg {
+            stroke: #ffd966;
+        }
+
+        .report-section {
+            padding: 4rem 0;
+            background: #f3f7f0;
+            text-align: center;
+        }
+
+        .report-section h2 {
+            font-size: 2rem;
+            color: #1e4620;
+            margin-bottom: 0.8rem;
+        }
+
+        .report-section p {
+            color: #4a6741;
+            max-width: 780px;
+            margin: 0 auto 1.8rem;
+            line-height: 1.7;
+            font-size: 1rem;
+        }
+
+        .report-section .report-btn {
+            background: #2e6f40;
+            color: white;
+            border: none;
+            padding: 0.95rem 1.8rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(46,111,64,0.18);
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .report-section .report-btn:hover {
+            background: #204b2d;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 900px) {
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+            .story-content, .why-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .section-title {
+                font-size: 1.8rem;
+            }
+            .page-header h1 {
+                font-size: 2rem;
+            }
+            .team-grid {
+                gap: 1.5rem;
+            }
+            .member-img {
+                width: 130px;
+                height: 130px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header class="navbar">
+    <div class="logo">
+        <img src="../assets/logo-sl.png" alt="Deshakthi Lanka Logo" onerror="this.src='https://placehold.co/150x50?text=Deshakthi'">
+    </div>
+    <nav class="nav-links">
+        <ul>
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="about.html" class="active">ABOUT US</a></li>
+            <li><a href="ContactUs.html">CONTACT US</a></li>
+            <li><a href="FindJobs.html">FIND JOBS</a></li>
+            <li><a href="employer.html">EMPLOYER</a></li>
+            <li><a href="education.html">EDUCATION</a></li>
+            <li><a href="blog.html">BLOG</a></li>
+        </ul>
+    </nav>
+    <div class="nav-action" id="nav-auth-section">
+        <a href="login.html" class="btn-register">Register / Login</a>
+    </div>
+</header>
+
+<main>
+    <!-- Page Header -->
+    <section class="page-header">
+        <h1>About Deshakthi Lanka</h1>
+        <p>Bridging Sri Lankan talent with global opportunities since 2014</p>
+    </section>
+
+    <!-- Our Story Section -->
+    <section class="about-story">
+        <div class="container">
+            <h2 class="section-title">Our Story</h2>
+            <div class="story-content">
+                <div class="story-image-wrapper" style="display: flex; justify-content: center; align-items: center;">
+    <video autoplay loop muted playsinline style="width: 320px; height: 520px; object-fit: cover; border-radius: 28px;">
+        <source src="../assets/about_us.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+</div>
+                <div class="story-text">
+                    <p>Deshakthi Lanka was established with a vision to bridge the gap between talented Sri Lankan professionals and the global job market. With years of industry expertise, we have grown into a leading recruitment agency, dedicated to transforming lives by providing reliable, efficient, and life-changing international career opportunities for thousands of aspiring candidates.</p>
+                    <p>Our success is built on a foundation of transparency, integrity, and unwavering commitment to our clients. We believe in treating every job seeker with respect and fairness, ensuring a recruitment process that adheres to the highest international standards. Excellence in service and empowering our workforce remain the core principles that drive everything we do.</p>
+                    <p>Today, Deshakthi Lanka stands as a beacon of hope for Sri Lankan professionals seeking to expand their horizons. We've successfully placed over 5,000 candidates in prestigious organizations across the globe, maintaining a remarkable 95% satisfaction rate from both employers and employees alike.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Values Section -->
+    <section class="core-values">
+        <div class="container">
+            <h2 class="section-title">Our Core Values</h2>
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        </svg>
+                    </div>
+                    <h3>Integrity First</h3>
+                    <p>We operate with absolute transparency and honesty, ensuring an ethical recruitment process for every single candidate.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        </svg>
+                    </div>
+                    <h3>Commitment to Excellence</h3>
+                    <p>We strive to deliver world-class service, meticulously matching the right talent with the right global opportunities.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </div>
+                    <h3>Empowering Talent</h3>
+                    <p>We believe in uplifting Sri Lankan professionals, giving them the tools and opportunities to achieve their global career dreams.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                    </div>
+                    <h3>Reliable Partnerships</h3>
+                    <p>We build enduring relationships with both our candidates and international employers based on deep trust and mutual success.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Meet the Team Section -->
+    <section class="about-team">
+        <div class="container">
+            <h2 class="section-title">Meet the Leadership Team</h2>
+            <div class="team-grid">
+                <div class="team-member">
+                    <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=250&q=80" alt="Asanka Perera" class="member-img">
+                    <p class="member-name">Asanka Perera</p>
+                    <p class="member-role">Founder & Managing Director</p>
+                </div>
+                <div class="team-member">
+                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=250&q=80" alt="Dilini Wijesinghe" class="member-img">
+                    <p class="member-name">Dilini Wijesinghe</p>
+                    <p class="member-role">Operations Manager</p>
+                </div>
+                <div class="team-member">
+                    <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=250&q=80" alt="Sanduni Fernando" class="member-img">
+                    <p class="member-name">Sanduni Fernando</p>
+                    <p class="member-role">International Recruitment Consultant</p>
+                </div>
+                <div class="team-member">
+                    <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=250&q=80" alt="Kasun Rajapaksha" class="member-img">
+                    <p class="member-name">Kasun Rajapaksha</p>
+                    <p class="member-role">Senior HR Executive</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section class="why-choose-us">
+        <div class="container">
+            <div class="why-grid">
+                <div class="why-image-wrapper">
+                    <img src="../assets/about_us2.png" alt="Global career opportunities">
+                    <div class="experience-badge">
+                        <span class="badge-number">10+</span>
+                        <span class="badge-text">Years of Excellence</span>
+                    </div>
+                </div>
+                <div class="why-content">
+                    <h2 class="section-title">Why Choose Deshakthi Lanka?</h2>
+                    <p class="why-intro">We don't just find you a job; we build your career pathway. Here is why thousands of Sri Lankan professionals trust us with their global aspirations.</p>
+                    <div class="features-list">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="2" y1="12" x2="22" y2="12"></line>
+                                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                                </svg>
+                            </div>
+                            <div class="feature-text">
+                                <h4>Extensive Global Network</h4>
+                                <p>Direct partnerships with top-tier employers across the Middle East, Asia, and Europe ensuring premium placements.</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                </svg>
+                            </div>
+                            <div class="feature-text">
+                                <h4>100% Ethical Recruitment</h4>
+                                <p>Complete transparency with no hidden fees. We strictly adhere to international labor laws and prioritize your safety.</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                </svg>
+                            </div>
+                            <div class="feature-text">
+                                <h4>End-to-End Support</h4>
+                                <p>From visa processing and ticketing to pre-departure training, we handle every complex detail for you.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="report-section">
+        <div class="container">
+            <h2>Generate a Deshakthi Lanka Report</h2>
+            <p>Download a professional PDF summary of our mission, values, and services. This report is generated directly from structured page content and text—no screenshot or image-based export.</p>
+            <button class="report-btn" onclick="generateAboutReport()">Download About Page Report</button>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="brand-statement">
+        <h2>DESHAKTHI LANKA</h2>
+        <div class="segmented-line">
+            <span class="segment short"></span>
+            <span class="segment short"></span>
+            <span class="segment short"></span>
+            <span class="segment long"></span>
+        </div>
+        <p>From the misty highlands to the global cup, Deshakthi Lanka brings the spirit of Ceylon up.<br>
+        With heritage in every leaf and purity in every brew,<br>
+        We share the heart of Sri Lanka, especially for you</p>
+    </div>
+    <div class="footer-main">
+        <div class="footer-container">
+            <div class="footer-col company-info">
+                <img src="../assets/logo-sl.png" alt="Deshakthi Lanka Logo" class="footer-logo" onerror="this.src='https://placehold.co/120x40?text=Deshakthi'">
+                <p class="address-text">No. 123, Tea Plantation Road, Kandy, Sri Lanka</p>
+                <p class="email-text">deshakthi@gmail.com</p>
+                <div class="customer-care">
+                    <p class="cc-title">Customer Care</p>
+                    <p class="cc-number">Landline : 0112 123 456</p>
+                </div>
+            </div>
+            <div class="footer-col links-col">
+                <h4>For Job Seekers</h4>
+                <ul>
+                    <li><a href="login.html">Register</a></li>
+                    <li><a href="FindJobs.html">Find Jobs</a></li>
+                    <li><a href="login.html">Login</a></li>
+                </ul>
+                <h4 class="mt-space">For Employers</h4>
+                <ul>
+                    <li><a href="admin.html">Employer Dashboard</a></li>
+                </ul>
+            </div>
+            <div class="footer-col links-col">
+                <h4>About Us</h4>
+                <ul>
+                    <li><a href="ContactUs.html">Contact Us</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="#">Terms & Conditions</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+            <div class="footer-col reviews-col">
+                <h4>Review Us on</h4>
+                <div class="social-icon">
+                    <a href="#" aria-label="Facebook">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Auth Check - Matching homepage functionality
+    function checkAuth() {
+        const navAction = document.getElementById('nav-auth-section');
+        const user = localStorage.getItem('user');
+        if (user) {
+            try {
+                const userData = JSON.parse(user);
+                navAction.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <a href="candidate-dashboard.html" style="color: white; background: #ffd966; padding: 0.4rem 1rem; border-radius: 40px; text-decoration: none; font-weight: 600;"> Dashboard</a>
+                        <a href="#" class="btn-logout" onclick="logout()" style="background:white; color:#2e6f40; padding:0.4rem 1rem; border-radius:40px; text-decoration:none;">Logout</a>
+                    </div>
+                `;
+            } catch(e) { console.warn(e); }
+        } else {
+            navAction.innerHTML = `<a href="login.html" class="btn-register">Register / Login</a>`;
+        }
+    }
+    
+    window.logout = function() {
+        if (confirm("Are you sure you want to log out?")) {
+            localStorage.removeItem('user');
+            alert("Logged out successfully!");
+            window.location.reload();
+        }
+    };
+    
+    document.addEventListener("DOMContentLoaded", () => {
+        checkAuth();
+    });
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    async function generateAboutReport() {
+        const jsPDFConstructor = window.jspdf?.jsPDF || window.jsPDF;
+        if (!jsPDFConstructor) {
+            alert('PDF library failed to load. Please check your internet connection and reload the page.');
+            return;
+        }
+
+        const doc = new jsPDFConstructor({ unit: 'pt', format: 'a4' });
+        const margin = 40;
+        const maxWidth = 520;
+        let y = 60;
+
+        doc.setFontSize(20);
+        doc.setTextColor('#1e4620');
+        doc.text('Deshakthi Lanka - About Report', margin, y);
+        y += 34;
+
+        doc.setDrawColor('#2e6f40');
+        doc.setLineWidth(1.5);
+        doc.line(margin, y, margin + 120, y);
+        y += 28;
+
+        doc.setFontSize(12);
+        doc.setTextColor('#333333');
+
+        const contents = [
+            {
+                heading: 'Our Story',
+                text: 'Deshakthi Lanka was established with a vision to bridge the gap between talented Sri Lankan professionals and the global job market. We provide reliable, efficient career opportunities and uphold transparency and integrity throughout the recruitment process.'
+            },
+            {
+                heading: 'Core Values',
+                text: 'Integrity, excellence, empowerment, and reliable partnerships are the foundation of our work. We match candidates with global employers while ensuring ethical recruitment and full support throughout every placement.'
+            },
+            {
+                heading: 'Why Choose Us',
+                text: 'We offer an extensive global network, end-to-end support, and a strong reputation for delivering premium placement services. Our mission is to build long-term career pathways for Sri Lankan professionals worldwide.'
+            }
+        ];
+
+        contents.forEach(section => {
+            doc.setFontSize(14);
+            doc.setTextColor('#1e4620');
+            doc.text(section.heading, margin, y);
+            y += 20;
+
+            doc.setFontSize(11);
+            doc.setTextColor('#424242');
+            const lines = doc.splitTextToSize(section.text, maxWidth);
+            doc.text(lines, margin, y);
+            y += lines.length * 16 + 18;
+
+            if (y > 720) {
+                doc.addPage();
+                y = margin;
+            }
+        });
+
+        doc.setFontSize(12);
+        doc.setTextColor('#2e6f40');
+        const footer = 'Report generated by Deshakthi Lanka — crafted for fast career decisions and employer partnerships.';
+        doc.text(footer, margin, 780);
+
+        try {
+            doc.save('Deshakthi_Lanka_About_Report.pdf');
+        } catch (err) {
+            console.error('PDF generation failed:', err);
+            alert('Unable to create the PDF file. Please try again or use a different browser.');
+        }
+    }
+</script>
+
+<script src="chatbot.js"></script></body>
+</html>

@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>My Dashboard | Deshakthi Lanka - Candidate Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f0f2f5;
+        }
+
+        /* Navbar Styles matching homepage */
+        .dashboard-nav {
+            background: #2e6f40;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0.8rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .nav-logo img {
+            height: 48px;
+            width: auto;
+            filter: brightness(0) invert(1);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.8rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: white;
+            transition: 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #ffd966;
+        }
+
+        .logout-btn {
+            background: #ffd966;
+            color: #1e4620;
+            border: none;
+            padding: 0.5rem 1.4rem;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: #ffe09d;
+            transform: translateY(-2px);
+        }
+
+        /* Dashboard Container */
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 5%;
+        }
+
+        /* Welcome Header */
+        .welcome-header {
+            background: linear-gradient(135deg, #1e4620, #2e6f40);
+            color: white;
+            padding: 2rem;
+            border-radius: 28px;
+            margin-bottom: 2rem;
+        }
+
+        .welcome-header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-header p {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 24px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+            border: 1px solid #e2edde;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(46,111,64,0.1);
+        }
+
+        .stat-card h3 {
+            font-size: 2.5rem;
+            color: #2e6f40;
+            margin-bottom: 0.5rem;
+            font-weight: 800;
+        }
+
+        .stat-card p {
+            color: #5a6e5a;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* Section Cards */
+        .section-card {
+            background: white;
+            border-radius: 24px;
+            padding: 1.8rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 1px solid #e2edde;
+        }
+
+        .section-card h2 {
+            color: #1e4620;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid #e2edde;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        /* Profile Form */
+        .profile-form {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+            color: #2e6f40;
+            font-size: 0.8rem;
+        }
+
+        .form-group input {
+            padding: 0.8rem 1rem;
+            border: 1px solid #cbd5e0;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #2e6f40;
+            box-shadow: 0 0 0 2px rgba(46,111,64,0.1);
+        }
+
+        .form-group input:disabled {
+            background: #f5f7f5;
+        }
+
+        .form-group input[type="file"] {
+            padding: 0.6rem;
+            background: #f8faf5;
+        }
+
+        .full-width {
+            grid-column: span 2;
+        }
+
+        .btn-update {
+            background: #2e6f40;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.8rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            width: fit-content;
+        }
+
+        .btn-update:hover {
+            background: #1c5a34;
+            transform: translateY(-2px);
+        }
+
+        .report-section {
+            background: white;
+            border-radius: 24px;
+            padding: 1.8rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 1px solid #e2edde;
+        }
+
+        .report-section h2 {
+            color: #1e4620;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .report-section p {
+            color: #5a6e5a;
+            margin-bottom: 1.4rem;
+            line-height: 1.6;
+        }
+
+        .report-section .report-btn {
+            background: #2e6f40;
+            color: white;
+            border: none;
+            padding: 0.85rem 1.8rem;
+            border-radius: 40px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .report-section .report-btn:hover {
+            background: #1c5a34;
+            transform: translateY(-2px);
+        }
+
+        small {
+            font-size: 0.7rem;
+            color: #5a6e5a;
+            margin-top: 0.3rem;
+        }
+
+        /* Applications Table */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        .applications-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .applications-table th {
+            background: #f8faf5;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 700;
+            color: #1e4620;
+            border-bottom: 2px solid #e2edde;
+            font-size: 0.85rem;
+        }
+
+        .applications-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #e2edde;
+            vertical-align: middle;
+            font-size: 0.85rem;
+            color: #4a5568;
+        }
+
+        .applications-table tr:hover {
+            background: #f8faf5;
+        }
+
+        /* Status Badges */
+        .status-badge {
+            display: inline-block;
+            padding: 0.3rem 0.9rem;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .status-Pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-Reviewing {
+            background: #cce5ff;
+            color: #004085;
+        }
+
+        .status-Shortlisted {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-Accepted {
+            background: #28a745;
+            color: white;
+        }
+
+        .status-Rejected {
+            background: #dc3545;
+            color: white;
+        }
+
+        .cv-link {
+            color: #2e6f40;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .cv-link:hover {
+            text-decoration: underline;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #5a6e5a;
+        }
+
+        .empty-state svg {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .browse-jobs-btn {
+            display: inline-block;
+            background: #2e6f40;
+            color: white;
+            padding: 0.7rem 1.8rem;
+            border-radius: 40px;
+            text-decoration: none;
+            margin-top: 1rem;
+            font-weight: 700;
+            transition: 0.2s;
+        }
+
+        .browse-jobs-btn:hover {
+            background: #1c5a34;
+            transform: translateY(-2px);
+        }
+
+        /* Alert Messages */
+        .alert {
+            padding: 1rem 1.2rem;
+            border-radius: 16px;
+            margin-bottom: 1.5rem;
+            display: none;
+            font-size: 0.85rem;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 1rem;
+            }
+            .welcome-header {
+                padding: 1.2rem;
+            }
+            .welcome-header h1 {
+                font-size: 1.3rem;
+            }
+            .profile-form {
+                grid-template-columns: 1fr;
+            }
+            .full-width {
+                grid-column: span 1;
+            }
+            .nav-container {
+                flex-direction: column;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .applications-table th,
+            .applications-table td {
+                padding: 0.8rem;
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar matching homepage -->
+    <div class="dashboard-nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="../assets/logo-sl.png" alt="Deshakthi Lanka Logo" onerror="this.src='https://placehold.co/150x50?text=Deshakthi'">
+            </div>
+            <div class="nav-links">
+                <a href="index.html"> HOME</a>
+                <a href="FindJobs.html"> FIND JOBS</a>
+                <a href="education.html"> EDUCATION</a>
+                <a href="ContactUs.html"> CONTACT</a>
+                <button class="logout-btn" onclick="logout()"> LOGOUT</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard Content -->
+    <div class="dashboard-container" id="dashboardContainer">
+        <div id="alertMessage" class="alert"></div>
+        <div id="dashboardContent">
+            <div style="text-align: center; padding: 50px;">
+                <p>Loading your dashboard...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        const API_BASE = 'http://localhost:3000/api';
+        let currentUser = null;
+        
+        try {
+            const userData = localStorage.getItem('user');
+            if (userData) {
+                currentUser = JSON.parse(userData);
+            }
+        } catch(e) {
+            console.error('Error parsing user data');
+        }
+
+        // Check if user is logged in
+        function checkAuth() {
+            if (!currentUser || !currentUser.email) {
+                alert('Please login to access your dashboard.');
+                window.location.href = 'login.html';
+                return false;
+            }
+            return true;
+        }
+
+        // Logout function
+        window.logout = function() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('user');
+                window.location.href = 'index.html';
+            }
+        };
+
+        // Show alert message
+        function showAlert(message, type) {
+            const alertDiv = document.getElementById('alertMessage');
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.innerHTML = message;
+            alertDiv.style.display = 'block';
+            setTimeout(() => {
+                alertDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        // Fetch user profile to get CV status
+        async function fetchProfile() {
+            try {
+                const response = await fetch(`${API_BASE}/user/profile/${currentUser.email}`);
+                if (response.ok) {
+                    return await response.json();
+                }
+                return {};
+            } catch (error) {
+                console.error('Error fetching profile:', error);
+                return {};
+            }
+        }
+
+        // Load dashboard data
+        async function loadDashboard() {
+            if (!checkAuth()) return;
+            
+            const container = document.getElementById('dashboardContent');
+            
+            // Fetch user's applications and profile
+            const applications = await fetchApplications();
+            const profile = await fetchProfile();
+            
+            // Calculate stats
+            const totalApps = applications.length;
+            const activeApps = applications.filter(a => a.status !== 'Accepted' && a.status !== 'Rejected').length;
+            const acceptedApps = applications.filter(a => a.status === 'Accepted').length;
+            
+            // Render dashboard
+            container.innerHTML = `
+                <div class="welcome-header">
+                    <h1>Welcome, ${escapeHtml(currentUser.fullName || currentUser.email.split('@')[0])}! 👋</h1>
+                    <p>Track your job applications, update your profile, and manage your career journey with Deshakthi Lanka.</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>${totalApps}</h3>
+                        <p>Total Applications</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>${activeApps}</h3>
+                        <p>Active Applications</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>${acceptedApps}</h3>
+                        <p>Accepted Offers</p>
+                    </div>
+                </div>
+
+                <div class="section-card">
+                    <h2>📝 Update Your Profile</h2>
+                    <form id="profileForm" class="profile-form" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label>Full Name *</label>
+                            <input type="text" id="fullName" value="${escapeHtml(currentUser.fullName || '')}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" value="${escapeHtml(currentUser.email)}" disabled style="background: #f5f7f5;">
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number *</label>
+                            <input type="tel" id="phone" value="${escapeHtml(currentUser.phone || '')}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Upload New CV (PDF, DOC, DOCX)</label>
+                            <input type="file" id="cvFile" accept=".pdf,.doc,.docx">
+                            <small>${profile.cvUrl ? '✅ Current CV uploaded. Upload new file to replace.' : '📄 No CV uploaded yet. Please upload your CV to apply for jobs.'}</small>
+                        </div>
+                        <div class="full-width">
+                            <button type="submit" class="btn-update">💾 Update Profile</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="report-section">
+                    <h2>📄 Download Your Dashboard Report</h2>
+                    <p>Generate a PDF summary of your application activity and profile status. This creates a real PDF document, not a screenshot.</p>
+                    <button class="report-btn" type="button" onclick="generateDashboardReport()">Download Dashboard PDF</button>
+                </div>
+
+                <div class="section-card">
+                    <h2>📋 My Job Applications</h2>
+                    <div class="table-container" id="applicationsTable">
+                        ${renderApplicationsTable(applications)}
+                    </div>
+                </div>
+            `;
+            
+            // Attach form submit handler
+            const profileForm = document.getElementById('profileForm');
+            if (profileForm) {
+                profileForm.addEventListener('submit', updateProfile);
+            } else {
+                console.error('Profile form not found!');
+            }
+        }
+        
+        // Render applications table
+        function renderApplicationsTable(applications) {
+            if (!applications || applications.length === 0) {
+                return `
+                    <div class="empty-state">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M20 13V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7m16 0v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-5m16 0h-2.586a1 1 0 0 0-.707.293l-2.414 2.414a1 1 0 0 1-.707.293h-3.172a1 1 0 0 1-.707-.293l-2.414-2.414A1 1 0 0 0 6.586 13H4"/>
+                        </svg>
+                        <p>You haven't applied for any jobs yet.</p>
+                        <a href="FindJobs.html" class="browse-jobs-btn">Browse Jobs →</a>
+                    </div>
+                `;
+            }
+            
+            return `
+                <table class="applications-table">
+                    <thead>
+                        <tr>
+                            <th>Job Title</th>
+                            <th>Applied Date</th>
+                            <th>Status</th>
+                            <th>CV</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${applications.map(app => `
+                            <tr>
+                                <td><strong>${escapeHtml(app.jobTitle)}</strong></td>
+                                <td>${app.createdAt ? new Date(app.createdAt).toLocaleDateString() : 'N/A'}</td>
+                                <td><span class="status-badge status-${app.status}">${app.status}</span></td>
+                                <td>${app.cvUrl ? `<a href="${app.cvUrl}" target="_blank" class="cv-link">📄 View CV</a>` : 'No CV'}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+        
+        // Fetch user's applications from backend
+        async function fetchApplications() {
+            try {
+                const response = await fetch(`${API_BASE}/user/applications/${currentUser.email}`);
+                if (response.ok) {
+                    return await response.json();
+                }
+                return [];
+            } catch (error) {
+                console.error('Error fetching applications:', error);
+                return [];
+            }
+        }
+        
+        // Update user profile
+        async function updateProfile(event) {
+            event.preventDefault();
+            console.log('Update profile function called');
+            
+            const fullName = document.getElementById('fullName').value;
+            const phone = document.getElementById('phone').value;
+            const cvFile = document.getElementById('cvFile').files[0];
+            
+            const formData = new FormData();
+            formData.append('fullName', fullName);
+            formData.append('phone', phone);
+            
+            if (cvFile) {
+                formData.append('cv', cvFile);
+                console.log('CV file attached:', cvFile.name);
+            } else {
+                console.log('No new CV file selected');
+            }
+            
+            const updateBtn = document.querySelector('.btn-update');
+            const originalText = updateBtn.textContent;
+            updateBtn.textContent = 'Updating...';
+            updateBtn.disabled = true;
+            
+            try {
+                console.log(`Sending update request to: ${API_BASE}/user/profile/${currentUser.email}`);
+                
+                const response = await fetch(`${API_BASE}/user/profile/${currentUser.email}`, {
+                    method: 'PUT',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                console.log('Response:', data);
+                
+                if (response.ok) {
+                    // Update local storage with new user data
+                    const updatedUser = {
+                        ...currentUser,
+                        fullName: fullName,
+                        phone: phone
+                    };
+                    localStorage.setItem('user', JSON.stringify(updatedUser));
+                    currentUser = updatedUser;
+                    
+                    showAlert('✅ Profile updated successfully!', 'success');
+                    
+                    // Clear file input
+                    document.getElementById('cvFile').value = '';
+                    
+                    // Reload dashboard to reflect changes
+                    setTimeout(() => {
+                        loadDashboard();
+                    }, 1500);
+                } else {
+                    showAlert('❌ Failed to update profile: ' + (data.error || 'Please try again'), 'error');
+                }
+            } catch (error) {
+                console.error('Update error:', error);
+                showAlert('❌ Network error. Please make sure the server is running at localhost:3000', 'error');
+            } finally {
+                updateBtn.textContent = originalText;
+                updateBtn.disabled = false;
+            }
+        }
+        
+        // Escape HTML to prevent XSS
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        async function generateDashboardReport() {
+            const jsPDFConstructor = window.jspdf?.jsPDF || window.jsPDF;
+            if (!jsPDFConstructor) {
+                alert('Unable to load PDF generator. Please check your internet connection and try again.');
+                return;
+            }
+
+            const doc = new jsPDFConstructor({ unit: 'pt', format: 'a4' });
+            const title = 'Deshakthi Lanka Candidate Dashboard Report';
+            const subtitle = `Generated on ${new Date().toLocaleString()}`;
+            const totalApps = document.querySelectorAll('.applications-table tbody tr').length;
+            const acceptedApps = document.querySelectorAll('.applications-table .status-Accepted').length;
+            const rejectedApps = document.querySelectorAll('.applications-table .status-Rejected').length;
+            const activeApps = Math.max(0, totalApps - acceptedApps - rejectedApps);
+            const headerY = 60;
+
+            doc.setFontSize(18);
+            doc.text(title, 40, headerY);
+            doc.setFontSize(11);
+            doc.text(subtitle, 40, headerY + 24);
+
+            doc.setFontSize(13);
+            doc.text('Profile Summary', 40, headerY + 64);
+            doc.setFontSize(11);
+            doc.text(`Name: ${escapeHtml(currentUser.fullName || currentUser.email.split('@')[0])}`, 40, headerY + 88);
+            doc.text(`Email: ${currentUser.email}`, 40, headerY + 108);
+            doc.text(`Phone: ${currentUser.phone || 'Not available'}`, 40, headerY + 128);
+
+            doc.setFontSize(13);
+            doc.text('Application Summary', 40, headerY + 168);
+            doc.setFontSize(11);
+            doc.text(`Total applications: ${totalApps}`, 40, headerY + 192);
+            doc.text(`Active applications: ${activeApps}`, 40, headerY + 212);
+            doc.text(`Accepted offers: ${acceptedApps}`, 40, headerY + 232);
+
+            const applications = Array.from(document.querySelectorAll('.applications-table tbody tr'));
+            let yOffset = headerY + 274;
+            if (applications.length) {
+                doc.setFontSize(13);
+                doc.text('Recent Applications', 40, yOffset);
+                doc.setFontSize(11);
+                yOffset += 24;
+
+                applications.slice(0, 6).forEach(row => {
+                    const cols = row.querySelectorAll('td');
+                    const jobTitle = cols[0]?.textContent.trim() || 'N/A';
+                    const appliedDate = cols[1]?.textContent.trim() || 'N/A';
+                    const status = cols[2]?.textContent.trim() || 'N/A';
+                    doc.text(`• ${jobTitle} — ${status} (${appliedDate})`, 40, yOffset);
+                    yOffset += 18;
+                    if (yOffset > 740) {
+                        doc.addPage();
+                        yOffset = 60;
+                    }
+                });
+            } else {
+                doc.text('No applications to summarize yet.', 40, yOffset);
+            }
+
+            doc.save('candidate-dashboard-report.pdf');
+        }
+        
+        // Initialize dashboard
+        window.onload = () => {
+            console.log('Dashboard loading...');
+            if (checkAuth()) {
+                loadDashboard();
+            }
+        };
+    </script>
+</body>
+</html>

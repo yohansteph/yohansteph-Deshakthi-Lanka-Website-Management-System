@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Deshakthi Lanka</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+        :root { 
+            --sidebar-bg: #1c5a34;
+            --sidebar-hover: #2e6f40;
+            --sidebar-active: #164b28;
+            --body-bg: #eef7ed;
+            --primary: #2e6f40;
+            --danger: #e74c3c;
+            --secondary: #4d8b65;
+            --warning: #f39c12;
+            --text-dark: #1e2a3e;
+            --text-muted: #4f6b5a;
+            --border-color: #d8e6d5;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-color: var(--body-bg); 
+            display: flex; 
+            height: 100vh; 
+            overflow: hidden; 
+            color: var(--text-dark);
+        }
+
+        .sidebar { 
+            width: 280px; 
+            background: var(--sidebar-bg); 
+            color: white; 
+            position: fixed; 
+            height: 100%; 
+            overflow-y: auto; 
+            z-index: 100;
+        }
+        
+        .sidebar-header { 
+            padding: 25px 20px; 
+            background: var(--sidebar-active); 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+        }
+        
+        .sidebar-header img.admin-pic { 
+            width: 45px; 
+            height: 45px; 
+            border-radius: 50%; 
+            border: 2px solid var(--primary); 
+            object-fit: cover;
+        }
+        
+        .sidebar-menu { list-style: none; }
+        .sidebar-menu li { border-bottom: 1px solid rgba(255,255,255,0.02); }
+        .sidebar-menu a { 
+            padding: 16px 25px; 
+            display: flex; 
+            align-items: center;
+            color: #b0c4de; 
+            text-decoration: none; 
+            font-size: 14px; 
+            font-weight: 500;
+            transition: all 0.3s ease; 
+            cursor: pointer;
+            border-left: 4px solid transparent;
+        }
+        .sidebar-menu a:hover, .sidebar-menu a.active { 
+            background: rgba(28, 136, 76, 0.1); 
+            color: white; 
+            border-left-color: var(--primary);
+        }
+
+        .main-wrapper { 
+            margin-left: 280px; 
+            width: calc(100% - 280px); 
+            display: flex; 
+            flex-direction: column; 
+            height: 100vh; 
+            overflow-y: auto; 
+        }
+        
+        .top-navbar { 
+            height: 70px; 
+            background: white; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            padding: 0 30px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03); 
+            position: sticky; 
+            top: 0; 
+            z-index: 90; 
+        }
+        
+        .topbar-brand { font-weight: 700; color: var(--sidebar-bg); font-size: 1.1rem; }
+        .topbar-user { font-weight: 500; color: var(--text-muted); font-size: 0.9rem; }
+
+        .content-body { padding: 30px 40px; }
+
+        .stats-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 25px; 
+            margin-bottom: 35px; 
+        }
+        
+        .stat-box { 
+            background: white; 
+            padding: 25px; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03); 
+            border-bottom: 4px solid var(--primary);
+            text-align: center;
+        }
+        
+        .stat-box h3 { margin: 0; font-size: 28px; color: var(--sidebar-bg); font-weight: 700; }
+        .stat-box p { margin: 5px 0 0; color: var(--text-muted); font-size: 13px; }
+
+        .charts-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; margin-bottom: 35px; }
+        .chart-card { background: white; padding: 20px; border-radius: 12px; }
+        .chart-card h3 { margin-bottom: 15px; font-size: 16px; border-left: 3px solid var(--primary); padding-left: 12px; }
+        .chart-container { height: 280px; position: relative; }
+
+        .report-btn { 
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            padding: 12px 25px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-size: 14px; 
+            font-weight: 600; 
+            margin-bottom: 20px; 
+            margin-right: 10px;
+            transition: 0.3s; 
+        }
+        .report-btn:hover { background: #146638; transform: translateY(-2px); }
+        .report-btn.pdf { background: #e74c3c; }
+        .report-btn.pdf:hover { background: #c0392b; }
+
+        .report-options { 
+            background: white; 
+            padding: 18px; 
+            border-radius: 14px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
+            display: grid; 
+            grid-template-columns: repeat(2, minmax(180px, 1fr)); 
+            gap: 12px; 
+            max-width: 900px; 
+        }
+        .report-options label { display: flex; align-items: center; gap: 10px; font-size: 0.95rem; color: var(--text-dark); }
+        .report-options input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--primary); }
+
+        .card { background: white; padding: 25px; border-radius: 12px; margin-bottom: 30px; }
+        h2 { font-size: 1.2rem; margin-bottom: 20px; color: var(--sidebar-bg); border-left: 4px solid var(--primary); padding-left: 15px; }
+        
+        .admin-table { width: 100%; border-collapse: collapse; }
+        .admin-table th { background: #f8fafc; padding: 12px; text-align: left; font-size: 13px; font-weight: 600; border-bottom: 2px solid var(--border-color); }
+        .admin-table td { padding: 12px; border-bottom: 1px solid var(--border-color); font-size: 13px; }
+        .admin-table tr:hover td { background-color: #f8fafc; }
+
+        .btn-action { padding: 6px 12px; border-radius: 6px; border: none; cursor: pointer; color: white; font-size: 11px; margin-right: 5px; font-weight: 600; }
+        .btn-res { background: var(--primary); }
+        .btn-rep { background: var(--secondary); }
+        .btn-del { background: var(--danger); }
+        .btn-edit { background: var(--warning); color: white; }
+        .btn-view { background: #9b59b6; }
+
+        .truncate-text {
+            max-height: 72px;
+            overflow: hidden;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            color: #4b5563;
+            padding: 10px;
+            background: #f8faf5;
+            border-radius: 10px;
+            margin: 0;
+            white-space: pre-wrap;
+        }
+
+        .modal-content h3 {
+            margin-top: 0;
+        }
+
+        .modal-content p {
+            margin: 10px 0;
+            font-size: 0.95rem;
+            color: #334155;
+        }
+
+        .modal-content .modal-section {
+            margin-bottom: 15px;
+        }
+
+        .status-badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; display: inline-block; }
+        .status-Pending { background: #fef08a; color: #854d0e; }
+        .status-Reviewing { background: #cce5ff; color: #004085; }
+        .status-Shortlisted { background: #d4edda; color: #155724; }
+        .status-Accepted { background: #28a745; color: white; }
+        .status-Rejected { background: #dc3545; color: white; }
+        .status-resolved { background: #d4edda; color: #155724; }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 500; font-size: 13px; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; font-family: inherit; }
+        .full-width { grid-column: span 2; }
+        .checkbox-group { display: flex; align-items: center; gap: 10px; }
+
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); align-items: center; justify-content: center; }
+        .modal.show { display: flex; }
+        .modal-content { background: white; padding: 30px; width: 90%; max-width: 600px; border-radius: 16px; }
+        .modal-footer { text-align: right; display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--border-color); }
+
+        .error-message { background: #fee2e2; color: #991b1b; padding: 30px; border-radius: 12px; text-align: center; max-width: 500px; margin: 40px auto; }
+        .error-message button { margin-top: 15px; padding: 10px 20px; background: var(--sidebar-bg); color: white; border: none; border-radius: 8px; cursor: pointer; }
+
+        /* PDF Report Styles */
+        .pdf-report {
+            font-family: 'Poppins', sans-serif;
+            padding: 40px;
+            background: white;
+        }
+        .pdf-report .report-header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 20px;
+        }
+        .pdf-report .report-header h1 {
+            color: var(--primary);
+            font-size: 28px;
+        }
+        .pdf-report .report-header p {
+            color: #666;
+            font-size: 12px;
+        }
+        .pdf-report .report-section {
+            margin-bottom: 30px;
+        }
+        .pdf-report .report-section h3 {
+            color: #1c884c;
+            margin-bottom: 15px;
+            border-left: 4px solid #1c884c;
+            padding-left: 12px;
+        }
+        .pdf-report table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+            font-size: 10px;
+        }
+        .pdf-report th {
+            background: #f0f2f5;
+            padding: 8px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        .pdf-report td {
+            padding: 8px;
+            border: 1px solid #ddd;
+        }
+        .pdf-report .summary-stats {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .pdf-report .stat-item {
+            background: #f8f9fa;
+            padding: 10px 15px;
+            border-radius: 8px;
+            text-align: center;
+            flex: 1;
+        }
+        .pdf-report .stat-item .number {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1c884c;
+        }
+        .pdf-report .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            font-size: 10px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="replyModal" class="modal">
+        <div class="modal-content">
+            <h3>Send Response</h3>
+            <p>To: <strong id="replyToEmail"></strong></p>
+            <textarea id="replyMessage" rows="6" style="width:100%; padding:10px; border-radius:8px; border:1px solid #ddd;"></textarea>
+            <div class="modal-footer">
+                <button class="btn-action" style="background:#94a3b8;" onclick="closeReplyModal()">Cancel</button>
+                <button class="btn-action btn-res" onclick="processReply()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="viewAppModal" class="modal">
+        <div class="modal-content">
+            <h3>Application Details</h3>
+            <div id="appDetailsBody" style="max-height: 60vh; overflow-y: auto;"></div>
+            <div class="modal-footer">
+                <button class="btn-action" style="background:#94a3b8;" onclick="closeViewModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=150&q=80" alt="Admin" class="admin-pic">
+            <div><span style="display: block; font-weight: 600;">Admin Portal</span><span style="font-size: 12px;">● Online</span></div>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a onclick="showSection('dashboard')">📊 Dashboard</a></li>
+            <li><a onclick="showSection('jobs')">💼 Jobs</a></li>
+            <li><a onclick="showSection('users')">👥 Users</a></li>
+            <li><a onclick="showSection('applications')">📝 Applications</a></li>
+            <li><a onclick="showSection('skilltests')">🎓 Skill Tests</a></li>
+            <li><a onclick="showSection('inquiries')">📧 Inquiries</a></li>
+            <li><a onclick="showSection('assessments')">📋 Assessments</a></li>
+            <li><a onclick="showSection('employers')">🏢 Employers</a></li>
+            <li><a href="index.html">🌐 View Site</a></li>
+            <li><a onclick="logoutAdmin()" style="color: #fca5a5;">🚪 Logout</a></li>
+        </ul>
+    </div>
+
+    <div class="main-wrapper">
+        <div class="top-navbar">
+            <div class="topbar-brand">DESHAKTHI LANKA | Admin System</div>
+            <div class="topbar-user" id="admin-name-display">Welcome, Admin</div>
+        </div>
+        <div class="content-body" id="content-body"></div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000/api/admin';
+        let targetEmail = "";
+        let currentSection = 'dashboard';
+        let editingJobId = null;
+        let currentJobs = [];
+        
+        // Store all data for PDF generation
+        let allJobsData = [];
+        let allUsersData = [];
+        let allApplicationsData = [];
+        let allInquiriesData = [];
+        let allAssessmentsData = [];
+        let allSkillTestsData = [];
+        let allEmployersData = [];
+        let statsData = {};
+
+        function checkAdminAccess() {
+            const user = localStorage.getItem('user');
+            if (!user) { showAccessDenied('Please login first.'); return false; }
+            try {
+                const userData = JSON.parse(user);
+                if (userData.email === 'admin@deshakthi.com') return true;
+                showAccessDenied(`Admin access required. Logged in as "${userData.email}".`);
+                return false;
+            } catch(e) { showAccessDenied('Invalid user data.'); return false; }
+        }
+
+        function showAccessDenied(message) {
+            document.getElementById('content-body').innerHTML = `<div class="error-message"><h3>⚠️ Access Denied</h3><p>${message}</p><button onclick="window.location.href='login.html'">Go to Login</button></div>`;
+        }
+
+        function logoutAdmin() { if(confirm("Logout?")) { localStorage.removeItem('user'); window.location.href = 'login.html'; } }
+
+        function showSection(section) {
+            currentSection = section;
+            if (section === 'dashboard') renderDashboard();
+            else if (section === 'jobs') renderJobsSection();
+            else if (section === 'users') renderUsersSection();
+            else if (section === 'applications') renderApplicationsSection();
+            else if (section === 'skilltests') renderSkillTestsSection();
+            else if (section === 'inquiries') renderInquiriesSection();
+            else if (section === 'assessments') renderAssessmentsSection();
+            else if (section === 'employers') renderEmployersSection();
+        }
+
+        // ============================================
+        // LOAD ALL DATA FOR PDF REPORT
+        // ============================================
+        async function loadAllDataForReport(selectedSections) {
+            try {
+                const tasks = [];
+                if (selectedSections.includes('dashboard')) {
+                    tasks.push(fetch('http://localhost:3000/api/admin/stats').then(res => res.json()).then(data => { statsData = data; }));
+                }
+                if (selectedSections.includes('jobs')) {
+                    tasks.push(fetch(`${API_URL}/jobs`).then(res => res.json()).then(data => { allJobsData = data; }));
+                }
+                if (selectedSections.includes('users')) {
+                    tasks.push(fetch(`${API_URL}/users`).then(res => res.json()).then(data => { allUsersData = data; }));
+                }
+                if (selectedSections.includes('applications')) {
+                    tasks.push(fetch('http://localhost:3000/api/admin/applications').then(res => res.json()).then(data => { allApplicationsData = data; }));
+                }
+                if (selectedSections.includes('inquiries')) {
+                    tasks.push(fetch(`${API_URL}/inquiries`).then(res => res.json()).then(data => { allInquiriesData = data; }));
+                }
+                if (selectedSections.includes('assessments')) {
+                    tasks.push(fetch(`${API_URL}/assessments`).then(res => res.json()).then(data => { allAssessmentsData = data; }));
+                }
+                if (selectedSections.includes('skilltests')) {
+                    tasks.push(fetch('http://localhost:3000/api/admin/test-attempts').then(res => res.json()).then(data => { allSkillTestsData = data; }));
+                }
+                if (selectedSections.includes('employers')) {
+                    tasks.push(fetch(`${API_URL}/employers`).then(res => res.json()).then(data => { allEmployersData = data; }));
+                }
+                await Promise.all(tasks);
+                console.log('Selected report data loaded for:', selectedSections);
+            } catch(err) {
+                console.error('Error loading data for report:', err);
+            }
+        }
+
+        function getSelectedReportSections() {
+            return Array.from(document.querySelectorAll('input[name="reportSection"]:checked')).map(el => el.value);
+        }
+
+        // ============================================
+        // GENERATE PDF REPORT
+        // ============================================
+        async function generateReport() {
+            const reportBtn = document.querySelector('.report-btn');
+            const selectedSections = getSelectedReportSections();
+            if (!selectedSections.length) {
+                alert('Please select at least one report section to generate.');
+                return;
+            }
+
+            reportBtn.textContent = '📄 Generating Report...';
+            reportBtn.disabled = true;
+            await loadAllDataForReport(selectedSections);
+
+            const currentDate = new Date().toLocaleString();
+            let reportHtml = `
+                <div class="pdf-report" id="pdfReportContent">
+                    <div class="report-header">
+                        <h1>DESHAKTHI LANKA</h1>
+                        <h2>Selected System Report</h2>
+                        <p>Generated on: ${currentDate}</p>
+                    </div>
+            `;
+
+            if (selectedSections.includes('dashboard')) {
+                reportHtml += `
+                    <div class="report-section">
+                        <h3>📊 Executive Summary</h3>
+                        <div class="summary-stats">
+                            <div class="stat-item"><div class="number">${statsData.totals?.totalJobs || 0}</div><div>Active Jobs</div></div>
+                            <div class="stat-item"><div class="number">${statsData.totals?.totalUsers || 0}</div><div>Registered Users</div></div>
+                            <div class="stat-item"><div class="number">${statsData.totals?.totalApplications || 0}</div><div>Job Applications</div></div>
+                            <div class="stat-item"><div class="number">${statsData.totals?.totalInquiries || 0}</div><div>Client Inquiries</div></div>
+                            <div class="stat-item"><div class="number">${statsData.totals?.totalEmployers || 0}</div><div>Employer Partners</div></div>
+                            <div class="stat-item"><div class="number">${statsData.totals?.totalAssessments || 0}</div><div>Education Assessments</div></div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (selectedSections.includes('jobs')) {
+                reportHtml += `
+                    <div class="report-section">
+                        <h3>💼 Active Job Vacancies (${allJobsData.length})</h3>
+                        <table>
+                            <thead>
+                                <tr><th>Job Title</th><th>Location</th><th>Salary</th><th>Category</th><th>Urgent</th><th>Posted Date</th></tr>
+                            </thead>
+                            <tbody>
+                                ${allJobsData.slice(0, 20).map(job => `
+                                    <tr><td>${escapeHtml(job.jobTitle || 'N/A')}</td><td>${escapeHtml(job.location || 'N/A')}</td><td>${escapeHtml(job.salary || 'N/A')}</td><td>${escapeHtml(job.category || 'N/A')}</td><td>${job.isUrgent ? 'Yes' : 'No'}</td><td>${new Date(job.postedDate).toLocaleDateString()}</td></tr>
+                                `).join('')}
+                                ${allJobsData.length > 20 ? `<tr><td colspan="6"><em>... and ${allJobsData.length - 20} more jobs</em></td></tr>` : ''}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            }
+
+            if (selectedSections.includes('users')) {
+                reportHtml += `
+                    <div class="report-section">
+                        <h3>👥 Registered Users (${allUsersData.length})</h3>
+                        <table>
+                            <thead><tr><th>Full Name</th><th>Email</th><th>Phone</th><th>Registered Date</th></tr></thead>
+                            <tbody>
+                                ${allUsersData.slice(0, 15).map(user => `
+                                    <tr><td>${escapeHtml(user.fullName || 'N/A')}</td><td>${escapeHtml(user.email || 'N/A')}</td><td>${escapeHtml(user.phone || 'N/A')}</td><td>${new Date(user.createdAt).toLocaleDateString()}</td></tr>
+                                `).join('')}
+                                ${allUsersData.length > 15 ? `<tr><td colspan="4"><em>... and ${allUsersData.length - 15} more users</em></td></tr>` : ''}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            }
+
+            if (selectedSections.includes('applications')) {
+                reportHtml += `
+                    <div class="report-section">
+                        <h3>📝 Job Applications (${allApplicationsData.length})</h3>
+                        <table>
+                            <thead><tr><th>Applicant Name</th><th>Email</th><th>Job Title</th><th>Status</th><th>Applied Date</th></tr></thead>
+                            <tbody>
+                                ${allApplicationsData.slice(0, 15).map(app => `
+                                    <tr><td>${escapeHtml(app.applicantName || 'N/A')}</td><td>${escapeHtml(app.email || 'N/A')}</td><td>${escapeHtml(app.jobTitle || 'N/A')}</td><td><span class="status-badge status-${app.status}">${app.status || 'Pending'}</span></td><td>${new Date(app.createdAt).toLocaleDateString()}</td></tr>
+                                `).join('')}
+                                ${allApplicationsData.length > 15 ? `<tr><td colspan="5"><em>... and ${allApplicationsData.length - 15} more applications</em></td></tr>` : ''}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="report-section">
+                        <h3>📊 Applications by Status</h3>
+                        <table>
+                            <thead><tr><th>Status</th><th>Count</th></tr></thead>
+                            <tbody>
+                                ${(() => {
+                                    const statusCounts = {};
+                                    allApplicationsData.forEach(app => {
+                                        const status = app.status || 'Pending';
+                                        statusCounts[status] = (statusCounts[status] || 0) + 1;
+                                    });
+                                    return Object.entries(statusCounts).map(([status, count]) => `<tr><td>${status}</td><td>${count}</td></tr>`).join('');
+                                })()}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            }
+
+            if (selectedSections.includes('inquiries')) {
+                reportHtml += `
+                    <div class="report-section">
+                        <h3>📧 Client Inquiries (${allInquiriesData.length})</h3>
+                        <table>
+                            <thead><tr><th>Name</th><th>Email</th><th>Subject</th><th>Status</th><th>Date</th></tr></thead>
+                            <tbody>
+                                ${allInquiriesData.slice(0, 10).map(inq => `
+                                    <tr><td>${escapeHtml(inq.name || 'N/A')}</td><td>${escapeHtml(inq.email || 'N/A')}</td><td>${escapeHtml(inq.subject || 'N/A')}</td><td>${inq.status || 'Pending'}</td><td>${new Date(inq.date).toLocaleDateString()}</td></tr>
+                                `).join('')}
+                                ${allInquiriesData.length > 10 ? `<tr><td colspan="5"><em>... and ${allInquiriesData.length - 10} more inquiries</em></td></tr>` : ''}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            }
+
+            if (selectedSections.includes('assessments')) {
+                reportHtml += `
+                    <div class="report-section">
+                        <h3>🎓 Education Assessments (${allAssessmentsData.length})</h3>
+                        <table>
+                            <thead><tr><th>Email</th><th>Destination</th><th>Status</th><th>Date</th></tr></thead>
+                            <tbody>
+                                ${allAssessmentsData.slice(0, 10).map(ass => `
+                                    <tr><td>${escapeHtml(ass.email || 'N/A')}</td><td>${escapeHtml(ass.destination || 'N/A')}</td><td>${ass.status || 'Pending'}</td><td>${new Date(ass.date).toLocaleDateString()}</td></tr>
+                                `).join('')}
+                                ${allAssessmentsData.length > 10 ? `<tr><td colspan="4"><em>... and ${allAssessmentsData.length - 10} more assessments</em></td></tr>` : ''}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            }
+
+            if (selectedSections.includes('skilltests')) {
+                reportHtml += `
+                    <div class="report-section">
+                        <h3>🎯 Skill Test Attempts (${allSkillTestsData.length})</h3>
+                        <table>
+                            <thead><tr><th>Email</th><th>Category</th><th>Score</th><th>Percentage</th><th>Passed</th><th>Date</th></tr></thead>
+                            <tbody>
+                                ${allSkillTestsData.slice(0, 10).map(test => `
+                                    <tr><td>${escapeHtml(test.email || 'N/A')}</td><td>${escapeHtml(test.category || 'N/A')}</td><td>${test.score}/${test.totalQuestions}</td><td>${test.percentage}%</td><td>${test.passed ? 'Yes' : 'No'}</td><td>${new Date(test.attemptedAt).toLocaleDateString()}</td></tr>
+                                `).join('')}
+                                ${allSkillTestsData.length > 10 ? `<tr><td colspan="6"><em>... and ${allSkillTestsData.length - 10} more attempts</em></td></tr>` : ''}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            }
+
+            if (selectedSections.includes('employers')) {
+                reportHtml += `
+                    <div class="report-section">
+                        <h3>🏢 Employer Partners (${allEmployersData.length})</h3>
+                        <table>
+                            <thead><tr><th>Company Name</th><th>Contact Name</th><th>Email</th><th>Target Region</th><th>Status</th><th>Date</th></tr></thead>
+                            <tbody>
+                                ${allEmployersData.slice(0, 10).map(emp => `
+                                    <tr><td>${escapeHtml(emp.companyName || 'N/A')}</td><td>${escapeHtml(emp.contactName || 'N/A')}</td><td>${escapeHtml(emp.email || 'N/A')}</td><td>${escapeHtml(emp.targetRegion || 'N/A')}</td><td>${emp.status || 'Pending'}</td><td>${new Date(emp.date).toLocaleDateString()}</td></tr>
+                                `).join('')}
+                                ${allEmployersData.length > 10 ? `<tr><td colspan="6"><em>... and ${allEmployersData.length - 10} more partners</em></td></tr>` : ''}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            }
+
+            reportHtml += `
+                    <div class="footer">
+                        <p>This is a system-generated report from Deshakthi Lanka Management System.</p>
+                        <p>© ${new Date().getFullYear()} Deshakthi Lanka - All Rights Reserved</p>
+                    </div>
+                </div>
+            `;
+
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = reportHtml;
+            tempDiv.style.position = 'absolute';
+            tempDiv.style.left = '-9999px';
+            tempDiv.style.top = '-9999px';
+            document.body.appendChild(tempDiv);
+
+            const reportElement = tempDiv.querySelector('#pdfReportContent') || tempDiv.firstChild;
+
+            const opt = {
+                margin: [0.5, 0.5, 0.5, 0.5],
+                filename: `Deshakthi_Report_${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, letterRendering: true },
+                jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
+            };
+
+            try {
+                await html2pdf().set(opt).from(reportElement).save();
+                alert('✅ Report generated and downloaded successfully!');
+            } catch(err) {
+                console.error('PDF generation error:', err);
+                alert('Error generating PDF. Please try again.');
+            } finally {
+                document.body.removeChild(tempDiv);
+                reportBtn.textContent = '📄 Generate Selected Report (PDF)';
+                reportBtn.disabled = false;
+            }
+        }
+                    
+                
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // ========== DASHBOARD WITH CHARTS ==========
+        async function renderDashboard() {
+            document.getElementById('content-body').innerHTML = `
+                <div style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px;">
+                    <div class="report-options">
+                        <label><input type="checkbox" name="reportSection" value="dashboard" checked> 📊 Dashboard</label>
+                        <label><input type="checkbox" name="reportSection" value="jobs" checked> 💼 Jobs</label>
+                        <label><input type="checkbox" name="reportSection" value="users" checked> 👥 Users</label>
+                        <label><input type="checkbox" name="reportSection" value="applications" checked> 📝 Applications</label>
+                        <label><input type="checkbox" name="reportSection" value="skilltests" checked> 🎓 Skill Tests</label>
+                        <label><input type="checkbox" name="reportSection" value="inquiries" checked> 📧 Inquiries</label>
+                        <label><input type="checkbox" name="reportSection" value="assessments" checked> 📋 Assessments</label>
+                        <label><input type="checkbox" name="reportSection" value="employers" checked> 🏢 Employers</label>
+                    </div>
+                    <button class="report-btn" onclick="generateReport()">📄 Generate Selected Report (PDF)</button>
+                </div>
+                <div class="stats-grid" id="stats-grid">
+                    <div class="stat-box"><h3 id="totalJobs">0</h3><p>Jobs</p></div>
+                    <div class="stat-box"><h3 id="totalUsers">0</h3><p>Users</p></div>
+                    <div class="stat-box"><h3 id="totalApps">0</h3><p>Applications</p></div>
+                    <div class="stat-box"><h3 id="totalInquiries">0</h3><p>Inquiries</p></div>
+                </div>
+                <div class="charts-grid">
+                    <div class="chart-card"><h3>Jobs by Category</h3><div class="chart-container"><canvas id="jobsChart"></canvas></div></div>
+                    <div class="chart-card"><h3>Applications by Status</h3><div class="chart-container"><canvas id="statusChart"></canvas></div></div>
+                    <div class="chart-card"><h3>Skill Test Pass Rates</h3><div class="chart-container"><canvas id="testChart"></canvas></div></div>
+                    <div class="chart-card"><h3>Applications Trend</h3><div class="chart-container"><canvas id="trendChart"></canvas></div></div>
+                </div>
+            `;
+            await loadStats();
+        }
+
+        async function loadStats() {
+            try {
+                const res = await fetch('http://localhost:3000/api/admin/stats');
+                const data = await res.json();
+                document.getElementById('totalJobs').innerText = data.totals?.totalJobs || 0;
+                document.getElementById('totalUsers').innerText = data.totals?.totalUsers || 0;
+                document.getElementById('totalApps').innerText = data.totals?.totalApplications || 0;
+                document.getElementById('totalInquiries').innerText = data.totals?.totalInquiries || 0;
+                
+                new Chart(document.getElementById('jobsChart'), { type: 'bar', data: { labels: data.jobsByCategory?.map(c=>c._id)||[], datasets: [{ label: 'Jobs', data: data.jobsByCategory?.map(c=>c.count)||[], backgroundColor: '#1c884c' }] } });
+                new Chart(document.getElementById('statusChart'), { type: 'doughnut', data: { labels: data.applicationsByStatus?.map(c=>c._id)||[], datasets: [{ data: data.applicationsByStatus?.map(c=>c.count)||[], backgroundColor: ['#f1c40f','#2e6f40','#27ae60','#1c884c','#e74c3c'] }] } });
+                new Chart(document.getElementById('testChart'), { type: 'bar', data: { labels: data.testAttempts?.map(t=>t._id)||[], datasets: [{ label: 'Pass Rate %', data: data.testAttempts?.map(t=>((t.passed/t.total)*100).toFixed(1))||[], backgroundColor: '#2e6f40' }] } });
+                new Chart(document.getElementById('trendChart'), { type: 'line', data: { labels: ['Jan','Feb','Mar','Apr','May','Jun'], datasets: [{ label: 'Applications', data: [12,19,15,25,22,30], borderColor: '#1c884c', tension: 0.4 }] } });
+            } catch(err) { console.error(err); }
+        }
+
+        // ========== JOBS SECTION ==========
+        async function renderJobsSection() {
+            document.getElementById('content-body').innerHTML = `
+                <div class="card"><h2 id="jobFormTitle">📝 Post New Job</h2>
+                    <form id="postJobForm" enctype="multipart/form-data">
+                        <div class="form-grid">
+                            <div class="form-group"><label>Job Title</label><input type="text" id="jobTitle" required></div>
+                            <div class="form-group"><label>Location</label><input type="text" id="jobLocation" required></div>
+                            <div class="form-group"><label>Salary</label><input type="text" id="jobSalary" required></div>
+                            <div class="form-group"><label>Category</label>
+                                <select id="jobCategory"><option>IT</option><option>Healthcare</option><option>Engineering</option><option>Construction</option><option>Hospitality</option></select>
+                            </div>
+                            <div class="form-group full-width"><label>Description</label><textarea id="jobDescription" rows="4" required></textarea></div>
+                            <div class="form-group"><label>Image</label><input type="file" id="jobImage" accept="image/*"></div>
+                            <div class="checkbox-group"><input type="checkbox" id="jobIsUrgent"><label>Urgent</label></div>
+                        </div>
+                        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+                            <button type="submit" class="btn-action btn-res" id="jobFormSubmit">Post Job</button>
+                            <button type="button" class="btn-action" id="cancelJobEditBtn" style="background:#94a3b8; display:none;">Cancel Edit</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card"><h2>💼 Active Jobs</h2><div style="overflow-x:auto;"><table class="admin-table"><thead><tr><th>Title</th><th>Location</th><th>Salary</th><th>Category</th><th>Urgent</th><th>Actions</th></tr></thead><tbody id="jobsTableBody"></tbody></table></div></div>
+            `;
+            await loadJobs();
+            document.getElementById('postJobForm').addEventListener('submit', postJob);
+            document.getElementById('cancelJobEditBtn').addEventListener('click', cancelJobEdit);
+        }
+
+        async function loadJobs() {
+            const res = await fetch(`${API_URL}/jobs`);
+            const jobs = await res.json();
+            currentJobs = jobs;
+            document.getElementById('jobsTableBody').innerHTML = jobs.map(j => `<tr><td>${escapeHtml(j.jobTitle)}</td><td>${escapeHtml(j.location)}</td><td>${escapeHtml(j.salary)}</td><td>${escapeHtml(j.category)}</td><td>${j.isUrgent?'Yes':'No'}</td><td><button onclick="editJob('${j._id}')" class="btn-action btn-edit">Edit</button><button onclick="deleteJob('${j._id}')" class="btn-action btn-del">Delete</button></td></tr>`).join('');
+        }
+
+        async function postJob(e) {
+            e.preventDefault();
+            const jobData = {
+                jobTitle: document.getElementById('jobTitle').value,
+                location: document.getElementById('jobLocation').value,
+                salary: document.getElementById('jobSalary').value,
+                category: document.getElementById('jobCategory').value,
+                description: document.getElementById('jobDescription').value,
+                isUrgent: document.getElementById('jobIsUrgent').checked,
+            };
+
+            try {
+                if (editingJobId) {
+                    console.log('Updating job', editingJobId, jobData);
+                    const response = await fetch(`${API_URL}/jobs/${editingJobId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(jobData)
+                    });
+                    const result = await response.json();
+                    if (!response.ok) {
+                        console.error('Job update failed', response.status, result);
+                        alert(`Update failed: ${result.error || result.message || response.statusText}`);
+                        return;
+                    }
+                    alert('Job updated!');
+                    editingJobId = null;
+                    document.getElementById('jobFormTitle').innerText = '📝 Post New Job';
+                    document.getElementById('jobFormSubmit').textContent = 'Post Job';
+                    document.getElementById('cancelJobEditBtn').style.display = 'none';
+                } else {
+                    const fd = new FormData();
+                    fd.append('jobTitle', jobData.jobTitle);
+                    fd.append('location', jobData.location);
+                    fd.append('salary', jobData.salary);
+                    fd.append('category', jobData.category);
+                    fd.append('description', jobData.description);
+                    fd.append('isUrgent', jobData.isUrgent);
+                    const img = document.getElementById('jobImage').files[0];
+                    if (img) fd.append('jobImage', img);
+                    const response = await fetch(`${API_URL}/jobs`, { method: 'POST', body: fd });
+                    const result = await response.json();
+                    if (!response.ok) {
+                        console.error('Job post failed', response.status, result);
+                        alert(`Post failed: ${result.error || result.message || response.statusText}`);
+                        return;
+                    }
+                    alert('Job posted!');
+                }
+            } catch (error) {
+                console.error('Job form submit error', error);
+                alert('Server request failed. Check console for details.');
+                return;
+            }
+
+            resetJobForm();
+            loadJobs();
+        }
+
+        async function deleteJob(id) { if(confirm('Delete?')) { await fetch(`${API_URL}/jobs/${id}`, { method: 'DELETE' }); if (editingJobId === id) cancelJobEdit(); loadJobs(); } }
+
+        function editJob(id) {
+            const job = currentJobs.find(item => item._id === id);
+            if (!job) return;
+            editingJobId = id;
+            document.getElementById('jobFormTitle').innerText = '✏️ Edit Job';
+            document.getElementById('jobFormSubmit').textContent = 'Save Changes';
+            document.getElementById('cancelJobEditBtn').style.display = 'inline-flex';
+            document.getElementById('jobTitle').value = job.jobTitle || '';
+            document.getElementById('jobLocation').value = job.location || '';
+            document.getElementById('jobSalary').value = job.salary || '';
+            document.getElementById('jobCategory').value = job.category || 'IT';
+            document.getElementById('jobDescription').value = job.description || '';
+            document.getElementById('jobIsUrgent').checked = !!job.isUrgent;
+            document.getElementById('jobImage').value = '';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function cancelJobEdit() {
+            editingJobId = null;
+            document.getElementById('jobFormTitle').innerText = '📝 Post New Job';
+            document.getElementById('jobFormSubmit').textContent = 'Post Job';
+            document.getElementById('cancelJobEditBtn').style.display = 'none';
+            resetJobForm();
+        }
+
+        function resetJobForm() {
+            document.getElementById('jobTitle').value = '';
+            document.getElementById('jobLocation').value = '';
+            document.getElementById('jobSalary').value = '';
+            document.getElementById('jobCategory').value = 'IT';
+            document.getElementById('jobDescription').value = '';
+            document.getElementById('jobIsUrgent').checked = false;
+            document.getElementById('jobImage').value = '';
+        }
+
+        // ========== USERS SECTION ==========
+        async function renderUsersSection() {
+            document.getElementById('content-body').innerHTML = `<div class="card"><h2>👥 Registered Users</h2><div style="overflow-x:auto;"><table class="admin-table"><thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Registered</th><th>Actions</th></tr></thead><tbody id="usersTableBody"></tbody></table></div></div>`;
+            const res = await fetch(`${API_URL}/users`);
+            const users = await res.json();
+            document.getElementById('usersTableBody').innerHTML = users.map(u => `<tr><td>${u.fullName}</td><td>${u.email}</td><td>${u.phone}</td><td>${new Date(u.createdAt).toLocaleDateString()}</td><td><button onclick="deleteUser('${u._id}')" class="btn-action btn-del">Delete</button></td></tr>`).join('');
+        }
+
+        async function deleteUser(id) { if(confirm('Delete?')) { await fetch(`${API_URL}/users/${id}`, { method: 'DELETE' }); renderUsersSection(); } }
+
+        // ========== APPLICATIONS SECTION ==========
+        async function renderApplicationsSection() {
+            document.getElementById('content-body').innerHTML = `<div class="card"><h2>📝 Job Applications</h2><div style="overflow-x:auto;"><table class="admin-table"><thead><tr><th>Applicant</th><th>Job</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead><tbody id="appsTableBody"></tbody></table></div></div>`;
+            await loadApplications();
+        }
+
+        async function loadApplications() {
+            const res = await fetch('http://localhost:3000/api/admin/applications');
+            const apps = await res.json();
+            document.getElementById('appsTableBody').innerHTML = apps.map(a => `<tr><td><strong>${a.applicantName}</strong><br><small>${a.email}</small></td><td>${a.jobTitle}</td><td><select onchange="updateAppStatus('${a._id}', this.value)" class="status-badge status-${a.status}"><option ${a.status==='Pending'?'selected':''}>Pending</option><option ${a.status==='Reviewing'?'selected':''}>Reviewing</option><option ${a.status==='Shortlisted'?'selected':''}>Shortlisted</option><option ${a.status==='Accepted'?'selected':''}>Accepted</option><option ${a.status==='Rejected'?'selected':''}>Rejected</option></select></td><td>${new Date(a.createdAt).toLocaleDateString()}</td><td><button onclick="viewApplication('${a._id}')" class="btn-action btn-view">View</button><button onclick="deleteApp('${a._id}')" class="btn-action btn-del">Delete</button></td>`).join('');
+        }
+
+        async function updateAppStatus(id, status) { await fetch(`http://localhost:3000/api/admin/applications/${id}/status`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status }) }); loadApplications(); }
+        async function viewApplication(id) { const res = await fetch(`http://localhost:3000/api/admin/applications/${id}`); const app = await res.json(); document.getElementById('appDetailsBody').innerHTML = `<p><strong>Name:</strong> ${app.applicantName}</p><p><strong>Email:</strong> ${app.email}</p><p><strong>Phone:</strong> ${app.phone}</p><p><strong>Job:</strong> ${app.jobTitle}</p><p><strong>Message:</strong> ${app.message || 'N/A'}</p>${app.cvUrl ? `<p><strong>CV:</strong> <a href="${app.cvUrl}" target="_blank">Download</a></p>` : ''}`; document.getElementById('viewAppModal').classList.add('show'); }
+        function closeViewModal() { document.getElementById('viewAppModal').classList.remove('show'); }
+        async function deleteApp(id) { if(confirm('Delete?')) { await fetch(`http://localhost:3000/api/admin/applications/${id}`, { method: 'DELETE' }); loadApplications(); } }
+
+        // ========== SKILL TESTS SECTION ==========
+        async function renderSkillTestsSection() {
+            document.getElementById('content-body').innerHTML = `<div class="card"><h2>🎓 Skill Test Attempts</h2><div style="overflow-x:auto;"><table class="admin-table"><thead><tr><th>Email</th><th>Category</th><th>Score</th><th>%</th><th>Passed</th><th>Date</th></tr></thead><tbody id="testsTableBody"></tbody></table></div></div>`;
+            const res = await fetch('http://localhost:3000/api/admin/test-attempts');
+            const tests = await res.json();
+            document.getElementById('testsTableBody').innerHTML = tests.map(t => `<tr><td>${t.email}</td><td>${t.category}</td><td>${t.score}/${t.totalQuestions}</td><td>${t.percentage}%</td><td>${t.passed ? '✅' : '❌'}</td><td>${new Date(t.attemptedAt).toLocaleDateString()}</td>`).join('');
+        }
+
+        
+
+        // ========== INQUIRIES SECTION ==========
+// Inquiries Section - With Reply Button (Gmail) + View Full Message
+async function renderInquiriesSection() {
+    document.getElementById('content-body').innerHTML = `<div class="card"><h2>📧 Client Inquiries</h2><div style="overflow-x:auto;"><table class="admin-table"><thead><tr><th>Sender</th><th>Subject</th><th>Message</th><th>Status</th><th>Actions</th></tr></thead><tbody id="inquiriesTableBody"></tbody></table></div></div>`;
+    const res = await fetch(`${API_URL}/inquiries`);
+    const inquiries = await res.json();
+    document.getElementById('inquiriesTableBody').innerHTML = inquiries.map(i => `
+        <tr>
+            <td><strong>${escapeHtml(i.name)}</strong><br><small>${escapeHtml(i.email)}</small></td>
+            <td>${escapeHtml(i.subject)}</td>
+            <td style="max-width: 350px;">
+                <div style="max-height: 80px; overflow-y: auto; font-size: 0.75rem; line-height: 1.4; background: #f8faf5; padding: 8px; border-radius: 8px; word-wrap: break-word;">
+                    ${escapeHtml(i.message)}
+                </div>
+            </td>
+            <td>
+                <select onchange="updateInquiryStatus('${i._id}', this.value)" style="padding: 6px 10px; border-radius: 10px; border: 1px solid #d1d5db; background: white; color: #1f2937;">
+                    <option value="Pending" ${i.status==='Pending' ? 'selected' : ''}>Pending</option>
+                    <option value="Resolved" ${i.status==='Resolved' ? 'selected' : ''}>Resolved</option>
+                    <option value="In Progress" ${i.status==='In Progress' ? 'selected' : ''}>In Progress</option>
+                    <option value="Follow Up" ${i.status==='Follow Up' ? 'selected' : ''}>Follow Up</option>
+                </select>
+            </td>
+            <td>
+                <button onclick="viewFullInquiry('${i._id}')" class="btn-action btn-view" style="background:#9b59b6; margin-bottom:5px;">📄 View Full</button>
+                <button onclick="replyViaGmail('${escapeHtml(i.email)}', '${escapeHtml(i.subject)}', '${escapeHtml(i.name)}')" class="btn-action btn-rep" style="background:#2e6f40;">✉️ Reply</button>
+                <button onclick="resolveInquiry('${i._id}')" class="btn-action btn-res" style="background:#2e6f40;">✓ Resolve</button>
+                <button onclick="deleteInquiry('${i._id}')" class="btn-action btn-del" style="background:#e74c3c;">🗑 Delete</button>
+            </td>
+        </tr>
+    `).join('');
+}
+
+// Function to reply via Gmail (opens Gmail compose window)
+function replyViaGmail(email, subject, customerName) {
+    // Create a professional reply body
+    const replyBody = `Dear ${customerName},
+
+Thank you for reaching out to Deshakthi Lanka.
+
+We have received your inquiry regarding "${subject}". Our team has reviewed your message and we will get back to you with a detailed response shortly.
+
+For urgent matters, please contact our hotline: 0112 123 456
+
+Best Regards,
+Deshakthi Lanka Team
+support@deshakthilanka.com
+www.deshakthilanka.com`;
+
+    // Encode for URL
+    const encodedSubject = encodeURIComponent(`Re: ${subject} - Deshakthi Lanka Support`);
+    const encodedBody = encodeURIComponent(replyBody);
+    
+    // Gmail compose URL
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(email)}&su=${encodedSubject}&body=${encodedBody}`;
+    
+    // Open Gmail in a new tab
+    window.open(gmailUrl, '_blank');
+    
+    // Optional: Auto-mark as resolved when reply is sent
+    const autoResolve = confirm(`Would you like to mark this inquiry as "Resolved" after sending the reply?\n\nClick OK to mark as Resolved, or Cancel to keep as Pending.`);
+    if (autoResolve) {
+        // Find the inquiry ID and resolve it
+        fetchInquiryAndResolve(email);
+    }
+}
+
+// Helper function to find and resolve inquiry by email
+async function fetchInquiryAndResolve(email) {
+    try {
+        const res = await fetch(`${API_URL}/inquiries`);
+        const inquiries = await res.json();
+        const inquiry = inquiries.find(i => i.email === email);
+        if (inquiry) {
+            await fetch(`${API_URL}/inquiries/${inquiry._id}/status`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: 'Resolved' })
+            });
+            renderInquiriesSection();
+            showAlert('✅ Inquiry marked as Resolved!', 'success');
+        }
+    } catch (err) {
+        console.error('Error resolving inquiry:', err);
+    }
+}
+
+// View Full Inquiry Modal (Keep your existing function)
+async function viewFullInquiry(id) {
+    const res = await fetch(`${API_URL}/inquiries`);
+    const inquiries = await res.json();
+    const inquiry = inquiries.find(i => i._id === id);
+    
+    if (inquiry) {
+        const modalContent = `
+            <div id="fullInquiryModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 10000;" onclick="closeFullViewModal()">
+                <div style="background: white; border-radius: 24px; max-width: 550px; width: 90%; padding: 25px; max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 40px rgba(0,0,0,0.2);" onclick="event.stopPropagation()">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #e2edde; padding-bottom: 15px;">
+                        <h3 style="color: #1e4620;">📧 Inquiry Details</h3>
+                        <button onclick="closeFullViewModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #999;">&times;</button>
+                    </div>
+                    <p><strong>👤 From:</strong> ${escapeHtml(inquiry.name)}</p>
+                    <p><strong>📧 Email:</strong> ${escapeHtml(inquiry.email)}</p>
+                    <p><strong>📌 Subject:</strong> ${escapeHtml(inquiry.subject)}</p>
+                    <p><strong>📅 Date:</strong> ${new Date(inquiry.date).toLocaleString()}</p>
+                    <p><strong>🟢 Status:</strong> <span class="status-badge ${inquiry.status==='Resolved'?'status-resolved':'status-Pending'}">${inquiry.status}</span></p>
+                    <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #e2edde;">
+                        <p><strong>📝 Full Message:</strong></p>
+                        <div style="background: #f8faf5; padding: 15px; border-radius: 16px; margin-top: 8px; white-space: pre-wrap; word-wrap: break-word; max-height: 250px; overflow-y: auto; font-size: 0.85rem; line-height: 1.5;">
+                            ${escapeHtml(inquiry.message)}
+                        </div>
+                    </div>
+                    <div style="margin-top: 25px; display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap;">
+                        <button onclick="replyViaGmail('${escapeHtml(inquiry.email)}', '${escapeHtml(inquiry.subject)}', '${escapeHtml(inquiry.name)}')" class="btn-action" style="background:#2e6f40; padding: 8px 16px;">✉️ Reply via Gmail</button>
+                        <button onclick="closeFullViewModal()" class="btn-action" style="background:#94a3b8; padding: 8px 16px;">Close</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Remove existing modal if any
+        const existingModal = document.getElementById('fullInquiryModal');
+        if (existingModal) existingModal.remove();
+        
+        // Add modal to body
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = modalContent;
+        document.body.appendChild(tempDiv.firstElementChild);
+    }
+}
+
+function closeFullViewModal() {
+    const modal = document.getElementById('fullInquiryModal');
+    if (modal) modal.remove();
+}
+
+// Show alert function (if not already present)
+function showAlert(message, type) {
+    // Check if alert container exists, if not create it
+    let alertDiv = document.getElementById('customAlert');
+    if (!alertDiv) {
+        alertDiv = document.createElement('div');
+        alertDiv.id = 'customAlert';
+        alertDiv.style.cssText = 'position: fixed; top: 20px; right: 20px; z-index: 10001; padding: 12px 20px; border-radius: 12px; font-size: 14px; font-weight: 500; display: none;';
+        document.body.appendChild(alertDiv);
+    }
+    
+    alertDiv.className = type === 'success' ? 'alert-success' : 'alert-error';
+    alertDiv.style.cssText += type === 'success' ? 'background: #d4edda; color: #155724; border: 1px solid #c3e6cb;' : 'background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;';
+    alertDiv.style.display = 'block';
+    alertDiv.innerHTML = message;
+    
+    setTimeout(() => {
+        alertDiv.style.display = 'none';
+    }, 4000);
+}
+
+
+
+
+
+        async function updateInquiryStatus(id, status) { await fetch(`${API_URL}/inquiries/${id}/status`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status }) }); renderInquiriesSection(); }
+        async function resolveInquiry(id) { await updateInquiryStatus(id, 'Resolved'); }
+        async function deleteInquiry(id) { if(confirm('Delete?')) { await fetch(`${API_URL}/inquiries/${id}`, { method: 'DELETE' }); renderInquiriesSection(); } }
+
+
+
+
+
+        // ========== ASSESSMENTS SECTION ==========
+        async function renderAssessmentsSection() {
+            document.getElementById('content-body').innerHTML = `
+                <div class="card">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:15px; flex-wrap:wrap;">
+                        <div>
+                            <h2>🎓 Education Assessments</h2>
+                            <p style="color:#64748b; margin:0; max-width:600px;">Review applicant assessment requests, filter by status, open full messages, update status, and reply directly.</p>
+                        </div>
+                        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+                            <span style="font-size:0.9rem; color:#475569;">Total records:</span>
+                            <span id="assessmentCount" style="font-weight:700; color:#1c884c;"></span>
+                        </div>
+                    </div>
+                    <div style="display:flex; justify-content:flex-end; gap:12px; align-items:center; margin-top:18px; flex-wrap:wrap;">
+                        <label style="font-size:0.9rem; color:#475569; display:flex; align-items:center; gap:8px;">
+                            Filter:
+                            <select id="assessmentFilter" onchange="filterAssessments()" style="padding:8px 10px; border-radius:10px; border:1px solid #d1d5db; font-size:0.95rem; background:#fff; color:#1f2937;">
+                                <option value="all">All Statuses</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Qualified">Qualified</option>
+                                <option value="Needs-Training">Needs Training</option>
+                                <option value="Not-Qualified">Not Qualified</option>
+                            </select>
+                        </label>
+                        <button class="btn-action btn-res" style="padding:8px 14px; font-size:0.9rem;" onclick="renderAssessmentsSection()">Refresh</button>
+                    </div>
+                    <div style="overflow-x:auto; margin-top:20px;">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Email</th>
+                                    <th>Destination</th>
+                                    <th>Message Preview</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="assessmentsTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+
+            const res = await fetch(`${API_URL}/assessments`);
+            allAssessmentsData = await res.json();
+            document.getElementById('assessmentCount').innerText = allAssessmentsData.length;
+            filterAssessments();
+        }
+
+        function filterAssessments() {
+            const selectedStatus = document.getElementById('assessmentFilter').value;
+            const assessments = selectedStatus === 'all'
+                ? allAssessmentsData
+                : allAssessmentsData.filter(a => a.status === selectedStatus);
+
+            document.getElementById('assessmentCount').innerText = assessments.length;
+            document.getElementById('assessmentsTableBody').innerHTML = assessments.map(a => `
+                <tr>
+                    <td>${escapeHtml(a.email)}</td>
+                    <td>${escapeHtml(a.destination)}</td>
+                    <td><div class="truncate-text">${escapeHtml((a.details || 'No message provided').substring(0, 180))}${(a.details || '').length > 180 ? '...' : ''}</div></td>
+                    <td>
+                        <select onchange="updateAssessmentStatus('${a._id}', this.value)">
+                            <option ${a.status==='Pending' ? 'selected' : ''}>Pending</option>
+                            <option ${a.status==='Qualified' ? 'selected' : ''}>Qualified</option>
+                            <option ${a.status==='Needs-Training' ? 'selected' : ''}>Needs Training</option>
+                            <option ${a.status==='Not-Qualified' ? 'selected' : ''}>Not Qualified</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button onclick="viewAssessmentDetails('${a._id}')" class="btn-action btn-view">View</button>
+                        <button onclick="replyToAssessmentViaGmail('${a.email}', '${escapeHtml(a.destination)}')" class="btn-action btn-rep">✉️ Reply via Gmail</button>
+                        <button onclick="deleteAssessment('${a._id}')" class="btn-action btn-del">Delete</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function updateAssessmentStatus(id, status) { await fetch(`${API_URL}/assessments/${id}/status`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status }) }); renderAssessmentsSection(); }
+        async function deleteAssessment(id) { if(confirm('Delete?')) { await fetch(`${API_URL}/assessments/${id}`, { method: 'DELETE' }); renderAssessmentsSection(); } }
+
+        async function viewAssessmentDetails(id) {
+            let assessment = allAssessmentsData.find(a => a._id === id);
+            if (!assessment) {
+                const res = await fetch(`${API_URL}/assessments`);
+                allAssessmentsData = await res.json();
+                assessment = allAssessmentsData.find(a => a._id === id);
+            }
+            if (!assessment) return;
+
+            const modalHtml = `
+                <div id="assessmentDetailModal" class="modal show">
+                    <div class="modal-content">
+                        <h3>Assessment Request Details</h3>
+                        <div class="modal-section"><strong>Email:</strong> ${escapeHtml(assessment.email)}</div>
+                        <div class="modal-section"><strong>Destination:</strong> ${escapeHtml(assessment.destination)}</div>
+                        <div class="modal-section"><strong>Status:</strong> <span class="status-badge ${assessment.status==='Resolved' ? 'status-resolved' : assessment.status==='Qualified' ? 'status-Accepted' : assessment.status==='Needs-Training' ? 'status-Reviewing' : assessment.status==='Not-Qualified' ? 'status-Rejected' : 'status-Pending'}">${escapeHtml(assessment.status || 'Pending')}</span></div>
+                        <div class="modal-section"><strong>Message:</strong><div style="background:#f8faf5; padding:15px; border-radius:12px; white-space:pre-wrap; max-height:280px; overflow-y:auto; margin-top:8px;">${escapeHtml(assessment.details || 'No message provided')}</div></div>
+                        <div class="modal-footer">
+                            <button class="btn-action" style="background:#94a3b8;" onclick="closeAssessmentModal()">Close</button>
+                            <button class="btn-action btn-rep" onclick="replyToAssessmentViaGmail('${assessment.email}', '${escapeHtml(assessment.destination)}')">✉️ Reply via Gmail</button>
+                            <button class="btn-action btn-res" onclick="markAssessmentQualified('${assessment._id}')">Mark as Qualified</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = modalHtml;
+            document.body.appendChild(tempDiv.firstElementChild);
+        }
+
+        async function markAssessmentQualified(id) {
+            await fetch(`${API_URL}/assessments/${id}/status`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: 'Qualified' })
+            });
+            closeAssessmentModal();
+            showAlert('Assessment marked as Qualified.', 'success');
+            renderAssessmentsSection();
+        }
+
+        function closeAssessmentModal() {
+            const modal = document.getElementById('assessmentDetailModal');
+            if (modal) modal.remove();
+        }
+
+
+
+
+        
+      // Employers Section - With Message Column, View Full, and Reply Button
+async function renderEmployersSection() {
+    document.getElementById('content-body').innerHTML = `
+        <div class="card">
+            <h2>🏢 Employer Partners</h2>
+            <div style="overflow-x:auto;">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Company</th>
+                            <th>Contact Person</th>
+                            <th>Email</th>
+                            <th>Target Region</th>
+                            <th>Message</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="employersTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    `;
+    
+    const res = await fetch(`${API_URL}/employers`);
+    const employers = await res.json();
+    
+    document.getElementById('employersTableBody').innerHTML = employers.map(e => `
+        <tr>
+            <td><strong>${escapeHtml(e.companyName)}</strong></td>
+            <td>${escapeHtml(e.contactName)}</td>
+            <td><small>${escapeHtml(e.email)}</small></td>
+            <td>${escapeHtml(e.targetRegion)}</td>
+            <td style="max-width: 300px;">
+                <div style="max-height: 70px; overflow-y: auto; font-size: 0.75rem; line-height: 1.4; background: #f8faf5; padding: 8px; border-radius: 8px; word-wrap: break-word;">
+                    ${escapeHtml(e.comment || e.details || 'No message provided')}
+                </div>
+            </td>
+            <td>
+                <select onchange="updateEmployerStatus('${e._id}', this.value)" style="padding: 6px 10px; border-radius: 10px; border: 1px solid #d1d5db; background: white; color: #1f2937;">
+                    <option value="Pending" ${e.status==='Pending' ? 'selected' : ''}>Pending</option>
+                    <option value="Resolved" ${e.status==='Resolved' ? 'selected' : ''}>Resolved</option>
+                    <option value="Under Review" ${e.status==='Under Review' ? 'selected' : ''}>Under Review</option>
+                    <option value="Contacted" ${e.status==='Contacted' ? 'selected' : ''}>Contacted</option>
+                </select>
+            </td>
+            <td>
+                <button onclick="viewFullEmployerMessage('${e._id}')" class="btn-action btn-view" style="background:#9b59b6; margin-bottom:5px;">📄 View Full</button>
+                <button onclick="replyToEmployerViaGmail('${escapeHtml(e.email)}', '${escapeHtml(e.companyName)}', '${escapeHtml(e.contactName)}')" class="btn-action btn-rep" style="background:#2e6f40;">✉️ Reply via Gmail</button>
+                <button onclick="resolveEmployer('${e._id}')" class="btn-action btn-res" style="background:#2e6f40;">✓ Resolve</button>
+                <button onclick="deleteEmployer('${e._id}')" class="btn-action btn-del" style="background:#e74c3c;">🗑 Delete</button>
+            </td>
+        </tr>
+    `).join('');
+}
+
+// Function to view full employer message in a modal
+async function viewFullEmployerMessage(id) {
+    const res = await fetch(`${API_URL}/employers`);
+    const employers = await res.json();
+    const employer = employers.find(e => e._id === id);
+    
+    if (employer) {
+        const modalContent = `
+            <div id="fullEmployerModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 10000;" onclick="closeFullEmployerModal()">
+                <div style="background: white; border-radius: 24px; max-width: 600px; width: 90%; padding: 25px; max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 40px rgba(0,0,0,0.2);" onclick="event.stopPropagation()">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #e2edde; padding-bottom: 15px;">
+                        <h3 style="color: #1e4620;">🏢 Employer Partnership Inquiry</h3>
+                        <button onclick="closeFullEmployerModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #999;">&times;</button>
+                    </div>
+                    
+                    <div style="background: #f8faf5; padding: 15px; border-radius: 16px; margin-bottom: 15px;">
+                        <p><strong>🏛️ Company:</strong> ${escapeHtml(employer.companyName)}</p>
+                        <p><strong>👤 Contact Person:</strong> ${escapeHtml(employer.contactName)}</p>
+                        <p><strong>📧 Email:</strong> ${escapeHtml(employer.email)}</p>
+                        <p><strong>🌍 Target Region:</strong> ${escapeHtml(employer.targetRegion)}</p>
+                        <p><strong>📅 Date:</strong> ${new Date(employer.date).toLocaleString()}</p>
+                        <p><strong>🟢 Status:</strong> <span class="status-badge ${employer.status==='Resolved'?'status-resolved':'status-Pending'}">${employer.status}</span></p>
+                    </div>
+                    
+                    <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #e2edde;">
+                        <p><strong>📝 Full Message / Requirements:</strong></p>
+                        <div style="background: #f8faf5; padding: 15px; border-radius: 16px; margin-top: 8px; white-space: pre-wrap; word-wrap: break-word; max-height: 300px; overflow-y: auto; font-size: 0.85rem; line-height: 1.5;">
+                            ${escapeHtml(employer.comment || employer.details || 'No message provided')}
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 25px; display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap;">
+                        <button onclick="replyToEmployerViaGmail('${escapeHtml(employer.email)}', '${escapeHtml(employer.companyName)}', '${escapeHtml(employer.contactName)}')" class="btn-action" style="background:#2e6f40; padding: 8px 16px;">✉️ Reply via Gmail</button>
+                        <button onclick="closeFullEmployerModal()" class="btn-action" style="background:#94a3b8; padding: 8px 16px;">Close</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Remove existing modal if any
+        const existingModal = document.getElementById('fullEmployerModal');
+        if (existingModal) existingModal.remove();
+        
+        // Add modal to body
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = modalContent;
+        document.body.appendChild(tempDiv.firstElementChild);
+    }
+}
+
+function closeFullEmployerModal() {
+    const modal = document.getElementById('fullEmployerModal');
+    if (modal) modal.remove();
+}
+
+// Function to reply to employer via Gmail
+function replyToEmployerViaGmail(email, companyName, contactName) {
+    // Create a professional reply body for employer
+    const replyBody = `Dear ${contactName},
+
+Thank you for your interest in partnering with Deshakthi Lanka regarding ${companyName}.
+
+We have received your inquiry and our B2B relations team will review your requirements carefully. We will get back to you with a detailed response within 2-3 business days.
+
+For immediate assistance, please contact our partnership hotline: 0112 123 456
+
+We look forward to a successful partnership!
+
+Best Regards,
+Deshakthi Lanka Team - B2B Division
+partnerships@deshakthilanka.com
+www.deshakthilanka.com`;
+
+    // Encode for URL
+    const encodedSubject = encodeURIComponent(`Partnership Inquiry: ${companyName} - Deshakthi Lanka`);
+    const encodedBody = encodeURIComponent(replyBody);
+    
+    // Gmail compose URL
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(email)}&su=${encodedSubject}&body=${encodedBody}`;
+    
+    // Open Gmail in a new tab
+    window.open(gmailUrl, '_blank');
+    
+    // Optional: Auto-mark as resolved when reply is sent
+    const autoResolve = confirm(`Would you like to mark this employer inquiry from "${companyName}" as "Resolved" after sending the reply?\n\nClick OK to mark as Resolved, or Cancel to keep as Pending.`);
+    if (autoResolve) {
+        findAndResolveEmployerByEmail(email);
+    }
+}
+
+function replyToAssessmentViaGmail(email, destination) {
+    const replyBody = `Dear Candidate,
+
+Thank you for your education assessment request for ${destination}.
+
+We have received your submission and our team will review your details and contact you shortly with the next steps.
+
+If you have any urgent questions, please contact us at 0112 123 456.
+
+Best Regards,
+Deshakthi Lanka Team
+support@deshakthilanka.com
+www.deshakthilanka.com`;
+
+    const encodedSubject = encodeURIComponent(`Education Assessment Request: ${destination} - Deshakthi Lanka`);
+    const encodedBody = encodeURIComponent(replyBody);
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(email)}&su=${encodedSubject}&body=${encodedBody}`;
+    window.open(gmailUrl, '_blank');
+
+    const autoResolve = confirm(`Would you like to mark this assessment request as \"Qualified\" after sending the reply?\n\nClick OK to mark as Qualified, or Cancel to keep the current status.`);
+    if (autoResolve) {
+        updateAssessmentStatusByEmail(email, 'Qualified');
+    }
+}
+
+async function updateAssessmentStatusByEmail(email, status) {
+    try {
+        const res = await fetch(`${API_URL}/assessments`);
+        const assessments = await res.json();
+        const assessment = assessments.find(a => a.email === email);
+        if (assessment) {
+            await fetch(`${API_URL}/assessments/${assessment._id}/status`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status })
+            });
+            renderAssessmentsSection();
+        }
+    } catch (err) {
+        console.error('Error updating assessment status:', err);
+    }
+}
+
+// Helper function to find and resolve employer by email
+async function findAndResolveEmployerByEmail(email) {
+    try {
+        const res = await fetch(`${API_URL}/employers`);
+        const employers = await res.json();
+        const employer = employers.find(e => e.email === email);
+        if (employer) {
+            await fetch(`${API_URL}/employers/${employer._id}/status`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: 'Resolved' })
+            });
+            renderEmployersSection();
+            showEmployerAlert('✅ Employer inquiry marked as Resolved!', 'success');
+        }
+    } catch (err) {
+        console.error('Error resolving employer:', err);
+    }
+}
+
+// Show alert for employer section
+function showEmployerAlert(message, type) {
+    let alertDiv = document.getElementById('employerAlert');
+    if (!alertDiv) {
+        alertDiv = document.createElement('div');
+        alertDiv.id = 'employerAlert';
+        alertDiv.style.cssText = 'position: fixed; top: 20px; right: 20px; z-index: 10001; padding: 12px 20px; border-radius: 12px; font-size: 14px; font-weight: 500; display: none;';
+        document.body.appendChild(alertDiv);
+    }
+    
+    alertDiv.className = type === 'success' ? 'alert-success' : 'alert-error';
+    alertDiv.style.cssText = type === 'success' ? 'background: #d4edda; color: #155724; border: 1px solid #c3e6cb; position: fixed; top: 20px; right: 20px; z-index: 10001; padding: 12px 20px; border-radius: 12px; font-size: 14px; font-weight: 500;' : 'background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; position: fixed; top: 20px; right: 20px; z-index: 10001; padding: 12px 20px; border-radius: 12px; font-size: 14px; font-weight: 500;';
+    alertDiv.style.display = 'block';
+    alertDiv.innerHTML = message;
+    
+    setTimeout(() => {
+        alertDiv.style.display = 'none';
+    }, 4000);
+}
+
+
+        async function updateEmployerStatus(id, status) { await fetch(`${API_URL}/employers/${id}/status`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status }) }); renderEmployersSection(); }
+        async function resolveEmployer(id) { await updateEmployerStatus(id, 'Resolved'); }
+        async function deleteEmployer(id) { if(confirm('Delete?')) { await fetch(`${API_URL}/employers/${id}`, { method: 'DELETE' }); renderEmployersSection(); } }
+
+        // ========== REPLY MODAL ==========
+        function openReplyModal(email, subject) { targetEmail = email; document.getElementById('replyToEmail').innerText = email; document.getElementById('replyMessage').value = `Dear Candidate,\n\nRegarding your ${subject}, we have received your inquiry. Our team will review and get back to you shortly.\n\nBest Regards,\nDeshakthi Lanka Team`; document.getElementById('replyModal').classList.add('show'); }
+        function closeReplyModal() { document.getElementById('replyModal').classList.remove('show'); }
+        function processReply() { alert(`Response sent to ${targetEmail}!`); closeReplyModal(); }
+
+        window.onload = () => { if (checkAdminAccess()) renderDashboard(); };
+    </script>
+</body>
+</html>

@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Education & Training | Deshakthi Lanka - Upskill for Global Success</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #ffffff;
+            color: #1e2a3e;
+            overflow-x: hidden;
+        }
+
+        /* ===== NAVBAR (Exactly matching homepage) ===== */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 5%;
+            background-color: #2e6f40;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            flex-wrap: wrap;
+        }
+
+        .logo img {
+            height: 48px;
+            width: auto;
+            filter: brightness(0) invert(1);
+        }
+
+        .nav-links ul {
+            display: flex;
+            gap: 1.8rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: white;
+            transition: 0.2s;
+            letter-spacing: 0.3px;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #ffd966;
+            border-bottom: 2px solid #ffd966;
+            padding-bottom: 4px;
+        }
+
+        .nav-action .btn-register {
+            background: white;
+            color: #2e6f40;
+            padding: 0.5rem 1.4rem;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .nav-action .btn-register:hover {
+            background: #ffd966;
+            color: #1e4620;
+            transform: translateY(-2px);
+        }
+
+        .btn-logout {
+            background: #fff0e0;
+            color: #2e6f40;
+            padding: 0.5rem 1.4rem;
+            border-radius: 40px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        /* ===== EDUCATION HERO SECTION ===== */
+        .education-hero {
+            background: linear-gradient(135deg, #e8f3ec 0%, #d4e8da 100%);
+            padding: 3rem 5%;
+            text-align: center;
+        }
+
+        .hero-overlay h1 {
+            font-size: 2.8rem;
+            color: #1e4620;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-overlay p {
+            font-size: 1rem;
+            color: #4a6741;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* ===== QUALIFICATIONS GUIDE SECTION ===== */
+        .qualifications-guide {
+            padding: 4rem 5%;
+            background: #ffffff;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .guide-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .guide-header h2 {
+            font-size: 2rem;
+            color: #1e4620;
+            font-weight: 700;
+        }
+
+        .guide-header p {
+            color: #5a6e5a;
+            margin-top: 0.5rem;
+        }
+
+        .qual-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .qual-card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #e2edde;
+        }
+
+        .qual-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 35px rgba(46,111,64,0.12);
+        }
+
+        .qual-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .qual-content {
+            padding: 1.5rem;
+        }
+
+        .qual-content h3 {
+            font-size: 1.2rem;
+            color: #1e4620;
+            margin-bottom: 0.5rem;
+        }
+
+        .target-region {
+            font-size: 0.8rem;
+            color: #2e6f40;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .req-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .req-list li {
+            font-size: 0.85rem;
+            color: #5a6e5a;
+            margin-bottom: 0.8rem;
+            line-height: 1.5;
+            padding-left: 1.2rem;
+            position: relative;
+        }
+
+        .req-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #2e6f40;
+            font-weight: 700;
+        }
+
+        .req-list strong {
+            color: #1e4620;
+        }
+
+        /* ===== ASSESSMENT SECTION ===== */
+        .assessment-section {
+            padding: 4rem 5%;
+            background: #f8faf5;
+        }
+
+        .assessment-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .assessment-text h2 {
+            font-size: 1.8rem;
+            color: #1e4620;
+            margin-bottom: 1rem;
+        }
+
+        .assessment-text p {
+            color: #5a6e5a;
+            line-height: 1.6;
+        }
+
+        .assessment-form-box {
+            background: white;
+            padding: 2rem;
+            border-radius: 28px;
+            border: 1px solid #e2edde;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+
+        .assessment-form-box h3 {
+            font-size: 1.3rem;
+            color: #1e4620;
+            margin-bottom: 1rem;
+        }
+
+        .eval-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .input-col {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .input-col label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #2e6f40;
+        }
+
+        .input-col input,
+        .input-col select,
+        .input-col textarea {
+            padding: 0.8rem 1rem;
+            border: 1px solid #cbd5e0;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .input-col input:focus,
+        .input-col select:focus,
+        .input-col textarea:focus {
+            border-color: #2e6f40;
+            box-shadow: 0 0 0 2px rgba(46,111,64,0.1);
+        }
+
+        .submit-eval-btn {
+            background: #2e6f40;
+            color: white;
+            padding: 0.8rem;
+            border-radius: 40px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 0.5rem;
+        }
+
+        .submit-eval-btn:hover {
+            background: #1c5a34;
+            transform: translateY(-2px);
+        }
+
+        .report-section {
+            background: #eef7ed;
+            padding: 2rem;
+            border-radius: 24px;
+            border: 1px solid #d2e5d3;
+            margin-top: 2rem;
+        }
+
+        .report-section h2 {
+            font-size: 1.6rem;
+            color: #1e4620;
+            margin-bottom: 0.75rem;
+        }
+
+        .report-section p {
+            color: #4a6b4d;
+            line-height: 1.6;
+            margin-bottom: 1.25rem;
+        }
+
+        .report-btn {
+            background: #2e6f40;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            padding: 0.9rem 1.8rem;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .report-btn:hover {
+            background: #1c5a34;
+            transform: translateY(-2px);
+        }
+
+        /* ===== FOOTER (Exactly matching homepage) ===== */
+        .site-footer {
+            background: #0f2b1c;
+            color: #ddd;
+            padding-top: 2rem;
+        }
+
+        .brand-statement {
+            text-align: center;
+            padding: 2rem 5% 1rem;
+            border-bottom: 1px solid #2c5a3a;
+        }
+
+        .brand-statement h2 {
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+            color: #ffeaac;
+        }
+
+        .segmented-line {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin: 1rem 0;
+        }
+
+        .segment {
+            height: 3px;
+            background: #adc6a9;
+        }
+
+        .segment.short { width: 35px; }
+        .segment.long { width: 70px; }
+
+        .footer-main {
+            padding: 2rem 5% 2rem;
+        }
+
+        .footer-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+
+        .footer-col {
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .footer-logo {
+            filter: brightness(0) invert(1);
+            height: 45px;
+            margin-bottom: 1rem;
+        }
+
+        .address-text, .email-text, .cc-number {
+            font-size: 0.85rem;
+            line-height: 1.4;
+            margin-bottom: 0.4rem;
+        }
+
+        .cc-title {
+            font-weight: 700;
+            margin-top: 0.7rem;
+        }
+
+        .links-col h4 {
+            color: #ffeaac;
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+        }
+
+        .links-col ul {
+            list-style: none;
+        }
+
+        .links-col li {
+            margin-bottom: 0.5rem;
+        }
+
+        .links-col a {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: 0.2s;
+        }
+
+        .links-col a:hover {
+            color: #ffd966;
+        }
+
+        .mt-space {
+            margin-top: 1.2rem;
+        }
+
+        .social-icon svg {
+            stroke: #ccc;
+            transition: 0.2s;
+        }
+
+        .social-icon a:hover svg {
+            stroke: #ffd966;
+        }
+
+        @media (max-width: 900px) {
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+            .hero-overlay h1 {
+                font-size: 1.8rem;
+            }
+            .assessment-wrapper {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .qual-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            .qual-img {
+                height: 180px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="navbar">
+    <div class="logo">
+        <img src="../assets/logo-sl.png" alt="Deshakthi Lanka Logo" onerror="this.src='https://placehold.co/150x50?text=Deshakthi'">
+    </div>
+    <nav class="nav-links">
+        <ul>
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="about.html">ABOUT US</a></li>
+            <li><a href="ContactUs.html">CONTACT US</a></li>
+            <li><a href="FindJobs.html">FIND JOBS</a></li>
+            <li><a href="employer.html">EMPLOYER</a></li>
+            <li><a href="education.html" class="active">EDUCATION</a></li>
+            <li><a href="blog.html">BLOG</a></li>
+        </ul>
+    </nav>
+    <div class="nav-action" id="nav-auth-section">
+        <a href="login.html" class="btn-register">Register / Login</a>
+    </div>
+</header>
+
+<section class="education-hero">
+    <div class="hero-overlay">
+        <h1>Upskill for Global Success</h1>
+        <p>Your pathway to an international career starts with the right qualifications. Discover the certifications required by top global employers and let our experts guide your educational journey.</p>
+    </div>
+</section>
+
+<section class="qualifications-guide">
+    <div class="container">
+        <div class="guide-header">
+            <h2>Global Industry Requirements</h2>
+            <p>Different countries and industries have strict educational and vocational standards. Here is a quick guide to the minimum qualifications expected by our international partners.</p>
+        </div>
+
+        <div class="qual-grid">
+            <div class="qual-card">
+                <img src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?auto=format&fit=crop&w=600&q=80" alt="Professional Chef" class="qual-img">
+                <div class="qual-content">
+                    <h3>Culinary & Hospitality</h3>
+                    <p class="target-region">Primary Markets: Dubai, Maldives, Europe</p>
+                    <ul class="req-list">
+                        <li><strong>Executive Chefs / Sous Chefs:</strong> Minimum NVQ Level 4 in Commercial Cookery or Culinary Arts Diploma.</li>
+                        <li><strong>Food Safety:</strong> Basic Food Hygiene Certificate (HACCP preferred).</li>
+                        <li><strong>Front Office / F&B:</strong> Diploma in Hospitality Management & fluent English proficiency.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="qual-card">
+                <img src="https://images.unsplash.com/photo-1584982751601-97dcc096659c?auto=format&fit=crop&w=600&q=80" alt="Nurse in Hospital" class="qual-img">
+                <div class="qual-content">
+                    <h3>Healthcare & Nursing</h3>
+                    <p class="target-region">Primary Markets: UK, Saudi Arabia, Japan</p>
+                    <ul class="req-list">
+                        <li><strong>Registered Nurses (UK):</strong> BSc in Nursing, active SLMC registration, and NMC CBT/OSCE clearance.</li>
+                        <li><strong>Language (UK/Japan):</strong> IELTS Academic (7.0) or JLPT (N3/N4) for Japan.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="qual-card">
+                <img src="../assets/Construction&Engineering.jpg" alt="Engineers on site" class="qual-img">
+                <div class="qual-content">
+                    <h3>Construction & Engineering</h3>
+                    <p class="target-region">Primary Markets: Qatar, UAE, Singapore</p>
+                    <ul class="req-list">
+                        <li><strong>Civil/MEP Engineers:</strong> BSc/BEng in related field (Washington Accord recognized preferred).</li>
+                        <li><strong>Technicians/Electricians:</strong> NVQ Level 3 or 4 in specific trade from recognized institutes.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="qual-card">
+                <img src="https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&w=600&q=80" alt="Caregiver with elderly" class="qual-img">
+                <div class="qual-content">
+                    <h3>Specialized Caregiving</h3>
+                    <p class="target-region">Primary Markets: Japan, Israel, Canada</p>
+                    <ul class="req-list">
+                        <li><strong>General Caregivers:</strong> NVQ Level 3 or 4 in Caregiving from TVEC registered institutions.</li>
+                        <li><strong>Japan SSW Visa:</strong> Careworker Skills Test & JLPT N4 / JFT-Basic A2.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="assessment-section" id="partner-form">
+    <div class="container">
+        <div class="assessment-wrapper">
+            <div class="assessment-text">
+                <h2>Not sure if you qualify?</h2>
+                <p>Don't let confusion hold back your career. Submit your current background and work experience below. Our expert counselors will evaluate your profile and recommend the best countries or courses for your global career journey.</p>
+            </div>
+
+            <div class="assessment-form-box">
+                <h3>Free Qualification Assessment</h3>
+                <form id="assessmentForm" class="eval-form">
+                    <div class="input-col">
+                        <label>Email Address</label>
+                        <input type="email" id="evalEmail" placeholder="Enter your email" required>
+                    </div>
+                    <div class="input-col">
+                        <label>Target Destination</label>
+                        <select id="evalDest" required>
+                            <option value="" disabled selected>Where do you want to work?</option>
+                            <option value="UAE">UAE</option>
+                            <option value="Japan">Japan</option>
+                            <option value="United Kingdom">United Kingdom</option>
+                            <option value="Europe">Europe</option>
+                            <option value="Other">Not sure yet</option>
+                        </select>
+                    </div>
+                    <div class="input-col">
+                        <label>Your Qualifications & Experience</label>
+                        <textarea id="evalDetails" rows="5" placeholder="Tell us about your certificates, work history, and skills..." required></textarea>
+                    </div>
+                    <button type="submit" class="submit-eval-btn">Submit for Assessment →</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="report-section">
+            <h2>📄 Download Education PDF Summary</h2>
+            <p>Generate a PDF overview of the education guidance and your selected qualification assessment details.</p>
+            <button type="button" class="report-btn" onclick="generateEducationReport()">Download Education PDF</button>
+        </div>
+    </div>
+</section>
+
+<footer class="site-footer">
+    <div class="brand-statement">
+        <h2>DESHAKTHI LANKA</h2>
+        <div class="segmented-line">
+            <span class="segment short"></span>
+            <span class="segment short"></span>
+            <span class="segment short"></span>
+            <span class="segment long"></span>
+        </div>
+        <p>From the misty highlands to the global cup, Deshakthi Lanka brings the spirit of Ceylon up.<br>
+        With heritage in every leaf and purity in every brew,<br>
+        We share the heart of Sri Lanka, especially for you</p>
+    </div>
+    <div class="footer-main">
+        <div class="footer-container">
+            <div class="footer-col company-info">
+                <img src="../assets/logo-sl.png" alt="Deshakthi Lanka Logo" class="footer-logo" onerror="this.src='https://placehold.co/120x40?text=Deshakthi'">
+                <p class="address-text">No. 123, Tea Plantation Road, Kandy, Sri Lanka</p>
+                <p class="email-text">deshakthi@gmail.com</p>
+                <div class="customer-care">
+                    <p class="cc-title">Customer Care</p>
+                    <p class="cc-number">Landline : 0112 123 456</p>
+                </div>
+            </div>
+            <div class="footer-col links-col">
+                <h4>For Job Seekers</h4>
+                <ul>
+                    <li><a href="login.html">Register</a></li>
+                    <li><a href="FindJobs.html">Find Jobs</a></li>
+                    <li><a href="login.html">Login</a></li>
+                </ul>
+                <h4 class="mt-space">For Employers</h4>
+                <ul>
+                    <li><a href="admin.html">Employer Dashboard</a></li>
+                </ul>
+            </div>
+            <div class="footer-col links-col">
+                <h4>About Us</h4>
+                <ul>
+                    <li><a href="ContactUs.html">Contact Us</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="#">Terms & Conditions</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+            <div class="footer-col reviews-col">
+                <h4>Review Us on</h4>
+                <div class="social-icon">
+                    <a href="#" aria-label="Facebook">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    async function generateEducationReport() {
+        const jsPDFConstructor = window.jspdf?.jsPDF || window.jsPDF;
+        if (!jsPDFConstructor) {
+            alert('Unable to load the PDF generator. Please check your internet connection and try again.');
+            return;
+        }
+
+        const doc = new jsPDFConstructor({ unit: 'pt', format: 'a4' });
+        const title = 'Deshakthi Lanka Education Summary';
+        const timestamp = new Date().toLocaleString();
+        const email = document.getElementById('evalEmail')?.value || 'N/A';
+        const destination = document.getElementById('evalDest')?.value || 'N/A';
+        const details = document.getElementById('evalDetails')?.value || 'N/A';
+
+        doc.setFontSize(18);
+        doc.text(title, 40, 60);
+        doc.setFontSize(11);
+        doc.text(`Generated on: ${timestamp}`, 40, 84);
+
+        doc.setFontSize(14);
+        doc.text('Assessment Summary', 40, 120);
+        doc.setFontSize(11);
+        doc.text(`Email: ${email}`, 40, 144);
+        doc.text(`Desired destination: ${destination}`, 40, 162);
+
+        doc.setFontSize(14);
+        doc.text('Profile Details', 40, 198);
+        doc.setFontSize(11);
+        const detailLines = doc.splitTextToSize(details, 520);
+        doc.text(detailLines, 40, 222);
+
+        doc.setFontSize(14);
+        doc.text('Qualification Guidance', 40, 320);
+        doc.setFontSize(11);
+        doc.text('Visit Deshakthi Lanka for tailored coaching on global certifications, IELTS, JLPT, and vocational pathways required by top employers.', 40, 344, { maxWidth: 520 });
+
+        doc.save('education-summary.pdf');
+    }
+</script>
+
+<script>
+    function checkAuth() {
+        const navAction = document.getElementById('nav-auth-section');
+        const user = localStorage.getItem('user');
+        if (user) {
+            try {
+                const userData = JSON.parse(user);
+                navAction.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <a href="candidate-dashboard.html" style="color: white; background: #ffd966; padding: 0.4rem 1rem; border-radius: 40px; text-decoration: none; font-weight: 600;"> Dashboard</a>
+                        <a href="#" class="btn-logout" onclick="logout()" style="background:white; color:#2e6f40; padding:0.4rem 1rem; border-radius:40px; text-decoration:none;">Logout</a>
+                    </div>
+                `;
+            } catch(e) { console.warn(e); }
+        } else {
+            navAction.innerHTML = `<a href="login.html" class="btn-register">Register / Login</a>`;
+        }
+    }
+
+    window.logout = function() {
+        if (confirm("Are you sure you want to log out?")) {
+            localStorage.removeItem('user');
+            alert("Logged out successfully!");
+            window.location.reload();
+        }
+    };
+
+    document.getElementById('assessmentForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const user = localStorage.getItem('user');
+        if (!user) {
+            alert("Please log in to submit your qualification assessment.");
+            window.location.href = 'login.html';
+            return;
+        }
+
+        const formData = {
+            email: document.getElementById('evalEmail').value,
+            destination: document.getElementById('evalDest').value,
+            details: document.getElementById('evalDetails').value
+        };
+
+        try {
+            const response = await fetch('http://localhost:3000/api/assessments', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+
+            if (response.ok) {
+                alert("✅ Assessment details submitted! Our team will evaluate your profile and send the results to your email.");
+                e.target.reset();
+            } else {
+                alert("❌ Failed to submit assessment. Please try again.");
+            }
+        } catch (err) {
+            console.error("Submission error:", err);
+            alert("⚠️ Connection error. Please ensure your server is running at localhost:3000");
+        }
+    });
+
+    window.onload = checkAuth;
+</script>
+
+<script src="chatbot.js"></script></body>
+</html>
