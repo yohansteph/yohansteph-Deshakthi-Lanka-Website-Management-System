@@ -41,7 +41,3 @@ To run this project locally on your machine:
 ```bash
    git clone [https://github.com/yourusername/deshakthi-lanka-portal.git](https://github.com/yourusername/deshakthi-lanka-portal.git)
    cd deshakthi-lanka-portal
-
-2. **Install dependencies:**
-```bash
-   npm install
