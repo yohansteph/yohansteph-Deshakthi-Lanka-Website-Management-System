@@ -1,43 +1,301 @@
-# Deshakthi Lanka - Web-Based Recruitment Management System
+# 🚀 Deshakthi Lanka - PPA Project
 
-A full-stack recruitment management system and public portal designed to streamline the international hiring process. This platform allows candidates to explore global job opportunities, assess their qualifications, and manage their applications, while providing an administrative backend for application tracking.
+![Node.js](https://img.shields.io/badge/Node.js-Backend-green)
+![Express.js](https://img.shields.io/badge/Express.js-Framework-black)
+![MongoDB](https://img.shields.io/badge/MongoDB-Database-green)
+![License](https://img.shields.io/badge/License-ISC-blue)
 
-## Key Features
+## 📖 Project Overview
 
-### Public Portal
-*   **Education & Qualifications Hub:** Displays global industry requirements (Culinary, Healthcare, Construction) with detailed minimum educational and vocational standards.
-*   **Qualification Assessment:** An interactive assessment form allowing candidates to submit their educational background, target destinations, and work experience for expert evaluation.
-*   **About Us & Corporate Info:** Fully responsive static pages providing company information, team details, and seamless navigation.
+Deshakthi Lanka is a web-based job recruitment and career development platform designed to connect job seekers with employers. The platform provides job listings, candidate applications, employer registration, skill assessments, career guidance, and inquiry management.
 
-### Candidate Dashboard (Authenticated)
-*   **Secure Authentication:** User registration, login, and OTP verification via secure routes.
-*   **Profile Management:** Candidates can securely update personal details without exposing sensitive credential endpoints.
-*   **CV Uploads & Storage:** Integrated file uploading using `multer` allowing users to upload and update their CVs (stored locally in `/public/cvs/`).
-*   **Application Tracking:** Real-time visibility into the status of submitted job applications (e.g., Pending, Reviewed, Accepted).
-
-### Skill Assessment Module
-*   **Automated Testing:** Industry-specific multiple-choice tests fetching 10 category-specific questions dynamically.
-*   **Evaluation Logic:** Automated grading system requiring a 70% passing score to qualify.
-*   **Cooldown Mechanism:** Enforces a 24-hour lockout period for failed test attempts, securely logged in the database.
+The system helps job seekers discover opportunities while enabling employers to recruit qualified candidates efficiently.
 
 ---
 
-## Technology Stack
+## ✨ Features
 
-*   **Frontend:** HTML5, CSS3, Vanilla JavaScript (Fetch API)
-*   **Backend:** Node.js, Express.js
-*   **Database:** MongoDB Atlas (Mongoose ODM)
-*   **Middleware & Utilities:** `multer` (File Uploads), standard RESTful routing.
+### 👨‍💼 Job Seeker Features
+- User Registration & Login
+- Secure Password Storage using Bcrypt
+- Browse Available Jobs
+- View Job Details
+- Apply for Jobs
+- Upload CV/Resume
+- Candidate Dashboard
+- Skill Assessment Tests
+- View Career Resources
+
+### 🏢 Employer Features
+- Employer Registration
+- Submit Recruitment Requests
+- Manage Job Opportunities
+- Review Candidate Applications
+
+### 🛠 Admin Features
+- Manage Jobs
+- View Applications
+- Manage Employer Requests
+- Monitor User Activities
+- Manage Inquiries
+
+### 📧 Communication Features
+- Contact Form
+- Inquiry Management
+- OTP Email Verification
+- Automated Email Notifications
+
+### 🧠 Skill Assessment System
+- IT Assessments
+- Healthcare Assessments
+- Engineering Assessments
+- Construction Assessments
+- Test Scoring & Evaluation
 
 ---
 
-## Installation & Local Setup
+## 🏗 System Architecture
 
-> **Note on Deployment:** This application utilizes `multer` for local file storage (saving CVs to the `/public/` directory). Therefore, it is designed to be hosted on environments that support persistent local file systems (like a VPS, EC2, or local machine) rather than serverless environments with read-only file systems.
+### Frontend
+- HTML5
+- CSS3
+- JavaScript
 
-To run this project locally on your machine:
+### Backend
+- Node.js
+- Express.js
 
-1. **Clone the repository:**
+### Database
+- MongoDB Atlas
+- Mongoose ODM
+
+### Additional Libraries
+- Multer (File Uploads)
+- Nodemailer (Email Service)
+- BcryptJS (Password Hashing)
+- OTP Generator
+- CORS
+- Dotenv
+
+---
+
+## 📂 Project Structure
+
 ```bash
-   git clone [https://github.com/yourusername/deshakthi-lanka-portal.git](https://github.com/yourusername/deshakthi-lanka-portal.git)
-   cd deshakthi-lanka-portal
+PPA Project/
+│
+├── models/
+│   ├── Application.js
+│   ├── Assessment.js
+│   ├── Employer.js
+│   ├── Inquiry.js
+│   ├── Job.js
+│   ├── TestAttempt.js
+│   └── User.js
+│
+├── public/
+│   ├── index.html
+│   ├── login.html
+│   ├── FindJobs.html
+│   ├── JobDetails.html
+│   ├── employer.html
+│   ├── candidate-dashboard.html
+│   ├── skill-test.html
+│   ├── ContactUs.html
+│   └── assets/
+│
+├── routes/
+│
+├── server.js
+├── package.json
+├── package-lock.json
+└── .env
+```
+
+---
+
+## 🗄 Database Models
+
+### User
+```javascript
+{
+  fullName,
+  email,
+  phone,
+  password
+}
+```
+
+### Job
+```javascript
+{
+  jobTitle,
+  location,
+  salary,
+  category,
+  description,
+  isUrgent,
+  imageUrl,
+  postedDate
+}
+```
+
+### Application
+```javascript
+{
+  jobId,
+  jobTitle,
+  applicantName,
+  email,
+  phone,
+  message,
+  cvUrl,
+  status
+}
+```
+
+### Employer
+```javascript
+{
+  contactName,
+  email,
+  companyName,
+  targetRegion,
+  comment,
+  status
+}
+```
+
+---
+
+## ⚙️ Installation Guide
+
+### 1. Clone Repository
+
+```bash
+git clone https://github.com/your-username/ppa-project.git
+```
+
+### 2. Navigate to Project
+
+```bash
+cd ppa-project
+```
+
+### 3. Install Dependencies
+
+```bash
+npm install
+```
+
+### 4. Configure Environment Variables
+
+Create a `.env` file:
+
+```env
+PORT=5000
+
+MONGO_URI=your_mongodb_connection_string
+
+EMAIL_USER=your_email@gmail.com
+EMAIL_PASS=your_app_password
+```
+
+### 5. Start Server
+
+```bash
+node server.js
+```
+
+or
+
+```bash
+npm start
+```
+
+### 6. Open Application
+
+```text
+http://localhost:5000
+```
+
+---
+
+## 🔐 Security Features
+
+- Password Encryption using BcryptJS
+- Email OTP Verification
+- File Upload Validation
+- MongoDB Data Protection
+- Secure Authentication Mechanisms
+
+---
+
+## 📧 Email Integration
+
+The project uses Nodemailer with Gmail SMTP services for:
+
+- OTP Verification
+- Candidate Notifications
+- Employer Communications
+- Inquiry Responses
+
+---
+
+## 📁 File Upload Support
+
+Supported uploads:
+
+- CV/Resume Files
+- Profile Documents
+- Job Related Attachments
+
+Storage Location:
+
+```bash
+/public/cvs/
+/public/uploads/
+```
+
+---
+
+
+## 📸 Screens Included
+
+- Home Page
+- Job Listings
+- Job Details
+- Login/Register
+- Employer Registration
+- Candidate Dashboard
+- Skill Assessment
+- Contact Page
+- Admin Panel
+
+---
+
+## 🤝 Contributors
+
+### Team Members
+
+- Yohan (Project Leader)
+- Nathan
+- Wameesha
+- Kavindu
+- Rovin
+
+
+---
+
+## 📄 License
+
+This project is licensed under the ISC License.
+
+---
+
+## 💡 Project Purpose
+
+This project was developed as part of an academic software engineering project to provide a complete recruitment management solution that connects job seekers, employers, and administrators through a centralized platform.
+
+---
+
