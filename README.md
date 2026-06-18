@@ -1,4 +1,4 @@
-# 🚀 Deshakthi Lanka - PPA Project
+# Deshakthi Lanka Website & System Management
 
 ![Node.js](https://img.shields.io/badge/Node.js-Backend-green)
 ![Express.js](https://img.shields.io/badge/Express.js-Framework-black)
